@@ -1,5 +1,5 @@
 {
-  "name": "PySpark 4.1 & Python 3.14 Dev",
+  "name": "PySpark 4.1 & Python 3.12 Dev",
   "dockerComposeFile": ["../docker-compose.yml"],
   "service": "spark",
   "workspaceFolder": "/workspace",

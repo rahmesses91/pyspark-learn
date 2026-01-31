@@ -4,13 +4,13 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        VARIANT: "3.14-bullseye"
+        VARIANT: "3.12-bullseye"
     
     container_name: pyspark_dev
     
     volumes:
       # Mounts your current directory to /workspace in the container
-      - ..:/workspace:cached
+      - .:/workspace:cached
     
     # Keeps the container running for devcontainer to attach
     command: /bin/sh -c "while sleep 1000; do :; done"
@@ -33,3 +33,7 @@ services:
     
     # Ensures the vscode user has the right permissions if needed
     user: vscode
+
+    env_file:
+      - .env
+
