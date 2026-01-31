@@ -1,5 +1,5 @@
 # Python 3.14 on Debian bullseye via Microsoft devcontainer image
-ARG VARIANT="3.14-bullseye"
+ARG VARIANT="3.12-bullseye"
 FROM mcr.microsoft.com/vscode/devcontainers/python:${VARIANT}
 
 ARG DEBIAN_FRONTEND=noninteractive
