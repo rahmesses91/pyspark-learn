@@ -23,13 +23,14 @@ services:
     environment:
       - PYSPARK_PYTHON=/usr/local/bin/python
       - PYSPARK_DRIVER_PYTHON=/usr/local/bin/python
+      
+      # Guardrails: reduce odds of runaway joins in local dev
+      # (Container caps are the hard stop; these are Spark-level soft caps)
+      - SPARK_DRIVER_MEMORY=2g
+      - SPARK_EXECUTOR_MEMORY=2g
     
-    # Lead DE Tip: Set resource limits to prevent a rogue 
-    # Spark join from freezing your host machine.
-    deploy:
-      resources:
-        limits:
-          memory: 4G
+    mem_limit: 4g
+    cpus: 2.0
     
     # Ensures the vscode user has the right permissions if needed
     user: vscode
