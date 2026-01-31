@@ -1,0 +1,35 @@
+services:
+  spark:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: "3.14-bullseye"
+    
+    container_name: pyspark_dev
+    
+    volumes:
+      # Mounts your current directory to /workspace in the container
+      - ..:/workspace:cached
+    
+    # Keeps the container running for devcontainer to attach
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    
+    ports:
+      - "4040:4040"   # Spark UI
+      - "8888:8888"   # JupyterLab
+      - "18080:18080" # Spark History Server
+    
+    environment:
+      - PYSPARK_PYTHON=/usr/local/bin/python
+      - PYSPARK_DRIVER_PYTHON=/usr/local/bin/python
+    
+    # Lead DE Tip: Set resource limits to prevent a rogue 
+    # Spark join from freezing your host machine.
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    
+    # Ensures the vscode user has the right permissions if needed
+    user: vscode
