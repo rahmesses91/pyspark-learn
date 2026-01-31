@@ -1,0 +1,71 @@
+{
+  "name": "PySpark 4.1 & Python 3.14 Dev",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "spark",
+  "workspaceFolder": "/workspace",
+
+  // 4040: Spark UI (Job monitoring/DAGs)
+  // 8888: JupyterLab
+  // 18080: Spark History Server (optional but good for Lead DEs)
+  "forwardPorts": [4040, 8888, 18080],
+  "portsAttributes": {
+    "4040": { "label": "Spark UI" },
+    "8888": { "label": "JupyterLab" },
+    "18080": { "label": "History Server" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Interpreter & Pathing
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.analysis.typeCheckingMode": "basic",
+        "python.analysis.extraPaths": [
+          "/opt/spark/python",
+          "/opt/spark/python/lib/py4j-0.10.9.7-src.zip"
+        ],
+        
+        // Formatting & Quality (Lead DE standard)
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        },
+        "python.analysis.autoImportCompletions": true,
+
+        // UI Cleanliness
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/.pytest_cache": true,
+          "**/.ipynb_checkpoints": true
+        }
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens",
+        "njpwerner.autodocstring"
+      ]
+    }
+  },
+
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "remoteEnv": {
+    // Ensures Spark uses the exact same Python binary for Driver and Workers
+    "PYSPARK_PYTHON": "/usr/local/bin/python",
+    "PYSPARK_DRIVER_PYTHON": "/usr/local/bin/python",
+    "SPARK_HOME": "/opt/spark",
+    "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64",
+    // Fixes terminal encoding issues
+    "PYTHONIOENCODING": "utf8"
+  },
+
+  // Ensure dependencies are ready immediately
+  "postCreateCommand": "python -m pip install -U pip && if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi",
+
+  "remoteUser": "vscode"
+}
