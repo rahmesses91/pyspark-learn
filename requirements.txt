@@ -1,0 +1,53 @@
+# --- Spark / Jupyter ---
+pyspark==4.1.1
+jupyterlab==4.2.5
+ipykernel==6.29.5
+ipython==8.27.0
+
+# --- Core Data Stack ---
+numpy==2.1.1
+pandas==2.2.2
+pyarrow==18.0.0
+
+# --- AWS ---
+boto3==1.35.27
+botocore==1.35.27
+s3transfer==0.10.2
+
+# --- Snowflake ---
+#snowflake-connector-python==3.12.1
+snowflake-snowpark-python==1.44.0
+
+# --- Security / Crypto ---
+cryptography==43.0.1
+pyOpenSSL==24.2.1
+cffi==1.17.0
+asn1crypto==1.5.1
+
+# --- HTTP / Utils ---
+requests==2.32.3
+urllib3==2.2.2
+certifi==2024.8.30
+charset-normalizer==3.3.2
+idna==3.8
+
+# --- Testing ---
+pytest==8.3.2
+pytest-xdist==3.6.1
+pytest-parallel==0.1.1
+parameterized==0.9.0
+
+# --- Jupyter / Debug ---
+debugpy==1.8.5
+pyzmq==26.2.0
+tornado==6.4.1
+traitlets==5.14.3
+
+# --- Misc Utilities ---
+python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
+packaging==24.1
+platformdirs==4.2.2
+filelock==3.15.4
+psutil==6.0.0
+PyYAML==6.0.2

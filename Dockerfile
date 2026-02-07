@@ -1,35 +1,38 @@
-# Python 3.14 on Debian bullseye via Microsoft devcontainer image
-ARG VARIANT="3.14-bullseye"
-FROM mcr.microsoft.com/vscode/devcontainers/python:${VARIANT}
+# Use Microsoft Dev Containers Python base (includes vscode user, shell setup, etc.)
+ARG VARIANT="3.12-bullseye"
+FROM mcr.microsoft.com/devcontainers/python:${VARIANT}
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# 1) Java (required by Spark)
+# Remove Yarn (Node package manager) apt repo if present (not needed for PySpark)
+# This avoids GPG/NO_PUBKEY failures during apt-get update.
+RUN rm -f /etc/apt/sources.list.d/yarn.list /etc/apt/sources.list.d/yarn*.list \
+  && rm -f /usr/share/keyrings/yarn.gpg /etc/apt/trusted.gpg.d/yarn.gpg
+
+# Java 17 + minimal tools required to download/extract Spark
 RUN apt-get update \
   && apt-get -y install --no-install-recommends \
-      openjdk-17-jdk \
-      curl \
-      ca-certificates \
-      tar \
+     openjdk-17-jdk \
+     curl \
+     ca-certificates \
+     tar \
   && rm -rf /var/lib/apt/lists/*
 
-# Use a more flexible way to set JAVA_HOME in case the path varies slightly
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-# 2) Spark 4.1.1 install
+# Install Apache Spark 4.1.1 (Hadoop 3 build)
 ENV SPARK_VERSION=4.1.1
 ENV HADOOP_PROFILE=hadoop3
+
 RUN curl -fsSL "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-${HADOOP_PROFILE}.tgz" \
   | tar -xz -C /opt/ \
   && ln -s "/opt/spark-${SPARK_VERSION}-bin-${HADOOP_PROFILE}" /opt/spark
 
 ENV SPARK_HOME=/opt/spark
-# Add Spark to PATH and PYTHONPATH
-ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
-ENV PYTHONPATH="${SPARK_HOME}/python:${SPARK_HOME}/python/lib/py4j-0.10.9.7-src.zip:${PYTHONPATH}"
+ENV PATH="${SPARK_HOME}/bin:${PATH}"
 
-# 3) Python deps
+# Python requirements
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/requirements.txt \
   && rm -f /tmp/requirements.txt
