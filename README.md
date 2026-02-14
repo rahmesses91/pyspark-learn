@@ -17,17 +17,46 @@ This repo is designed as a **personal learning sandbox** for:
 ```
 pyspark-learn/
 ├── src/
-│   ├── pyspark/              # PySpark learning modules
+│   ├── pyspark/                    # PySpark learning modules
 │   │   ├── __init__.py
-│   │   └── spark_session.py  # Spark session utilities
-│   ├── python_core/          # Core Python concepts
-│   │   ├── data_structures/  # Lists, dicts, tuples, strings
-│   │   └── strings_built_in.py
-│   └── scratch.ipynb         # Scratch notebook for experiments
-├── Dockerfile                # Container image definition
-├── docker-compose.yml        # Container orchestration
-└── requirements.txt          # Python dependencies
+│   │   └── spark_session.py        # Spark session utilities
+│   │
+│   ├── python_core/                # Core Python concepts
+│   │   ├── data_structures/        # Comprehensive data structure tutorials
+│   │   │   ├── README.md           # Overview and navigation guide
+│   │   │   ├── strings/            # String methods & manipulation
+│   │   │   ├── lists/              # List operations & comprehensions
+│   │   │   ├── tuples/             # Tuple methods & use cases
+│   │   │   ├── dictionaries/       # Dictionary operations & patterns
+│   │   │   ├── sets/               # Set operations for data engineering
+│   │   │   └── collections/        # Advanced collections module
+│   │   ├── pandas/                 # Pandas DataFrame operations
+│   │   └── practice/               # Practice exercises
+│   │
+│   ├── practice_datasets/          # Sample data for practice
+│   │   ├── csv/                    # CSV files
+│   │   └── json/                   # JSON files
+│   │
+│   └── scratch.ipynb               # Scratch notebook for experiments
+│
+├── Dockerfile                      # Container image definition
+├── docker-compose.yml              # Container orchestration
+└── requirements.txt                # Python dependencies
 ```
+
+### Learning Materials Organization
+
+Each data structure directory follows a consistent pattern:
+
+- **README.md** — Topic overview, quick reference, and navigation
+- **Jupyter Notebooks** — Interactive tutorials with explanations and examples
+- **Python Scripts** — Standalone code files and challenges
+
+All notebooks are designed with **Data Engineering use cases** in mind, including:
+- ETL operations (filtering, transformation, validation)
+- Data cleaning and normalization
+- Aggregation and grouping patterns
+- Performance considerations for large datasets
 
 ---
 
@@ -171,9 +200,26 @@ See `requirements.txt` for the complete list with versions.
 ## 💡 Tips for Learning
 
 1. **Start with notebooks** — Use `src/scratch.ipynb` for quick experiments
-2. **Explore Python basics** — Check `src/python_core/` for data structure examples
-3. **Build PySpark skills** — Add your learning notebooks to `src/pyspark/`
-4. **Monitor Spark jobs** — Always keep http://localhost:4040 open when running Spark code
+2. **Follow the learning path** — Each directory has a README.md with a suggested learning order:
+   - Start with **strings** and **lists** (data cleaning and transformation)
+   - Move to **dictionaries** and **sets** (lookups and deduplication)
+   - Explore **tuples** and **collections** (advanced patterns)
+3. **Practice with real data** — Use files in `src/practice_datasets/` for hands-on exercises
+4. **Build PySpark skills** — Add your learning notebooks to `src/pyspark/`
+5. **Monitor Spark jobs** — Always keep http://localhost:4040 open when running Spark code
+
+### Data Structures Quick Reference
+
+| Topic | Directory | Key Concepts |
+|-------|-----------|--------------|
+| Strings | `src/python_core/data_structures/strings/` | Cleaning, parsing, validation |
+| Lists | `src/python_core/data_structures/lists/` | Filter, map, comprehensions |
+| Tuples | `src/python_core/data_structures/tuples/` | Immutability, unpacking |
+| Dictionaries | `src/python_core/data_structures/dictionaries/` | Lookups, JSON, aggregation |
+| Sets | `src/python_core/data_structures/sets/` | Deduplication, reconciliation |
+| Collections | `src/python_core/data_structures/collections/` | Counter, defaultdict, deque |
+
+Each directory contains detailed README documentation and Jupyter notebooks with interactive examples.
 
 ---
 
