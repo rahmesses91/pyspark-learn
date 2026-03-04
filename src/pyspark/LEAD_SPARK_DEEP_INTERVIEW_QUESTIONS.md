@@ -5,6 +5,23 @@
 
 ---
 
+## Table of contents
+
+| Part | Topic | Questions |
+|------|--------|-----------|
+| [Part 1: Core Architecture](#part-1-core-architecture) | Execution model, DAG, lazy eval, Catalyst, Tungsten, codegen, driver vs executor | Q1–Q7 |
+| [Part 2: Shuffling & Joins](#part-2-shuffling-joins) | Shuffle mechanics, spill, broadcast/sort-merge/hash, join strategy, skew, AQE | Q8–Q15 |
+| [Part 3: Partitioning](#part-3-partitioning) | Narrow vs wide, repartition vs coalesce, custom partitioners, partition sizing, small files, locality | Q16–Q21 |
+| [Part 4: Performance Tuning](#part-4-performance-tuning) | Memory, GC, serialization, persistence, checkpointing, OOM, executor sizing, dynamic allocation | Q22–Q29 |
+| [Part 5: Data Skew](#part-5-data-skew) | Causes, detection, salting, skew hints, AQE | Q30–Q33 |
+| [Part 6: Spark SQL & Optimization](#part-6-spark-sql-optimization) | Predicate/column/partition pruning, bucketing, Parquet vs ORC, stats & CBO | Q34–Q39 |
+| [Part 7: Streaming](#part-7-streaming) | Micro-batch vs continuous, watermarking, exactly-once, checkpointing | Q40–Q43 |
+| [Part 8: Production & Design](#part-8-production-design) | Design at scale, failure recovery, idempotency, monitoring, anti-patterns, when not to use Spark, debugging scenario | Q44–Q50 |
+| [Part 9: Summary and Differentiation](#part-9-summary-and-differentiation) | Recurring patterns, Senior vs Lead, 2-week revision roadmap | — |
+
+---
+
+<a id="part-1-core-architecture"></a>
 # Part 1: Core Architecture
 
 ---
@@ -100,6 +117,7 @@ Traditional execution uses a chain of iterators: each operator (e.g. Filter, Pro
 
 ---
 
+<a id="part-2-shuffling-joins"></a>
 # Part 2: Shuffling & Joins
 
 ---
@@ -212,6 +230,7 @@ During **shuffle write**, each task accumulates records in memory; when the in-m
 
 ---
 
+<a id="part-3-partitioning"></a>
 # Part 3: Partitioning
 
 ---
@@ -294,6 +313,7 @@ During **shuffle write**, each task accumulates records in memory; when the in-m
 
 ---
 
+<a id="part-4-performance-tuning"></a>
 # Part 4: Performance Tuning
 
 ---
@@ -402,6 +422,7 @@ Common levels: **MEMORY_ONLY:** Cached in heap only; if evicted, recomputed. **M
 
 ---
 
+<a id="part-5-data-skew"></a>
 # Part 5: Data Skew
 
 ---
@@ -458,6 +479,7 @@ Common levels: **MEMORY_ONLY:** Cached in heap only; if evicted, recomputed. **M
 
 ---
 
+<a id="part-6-spark-sql-optimization"></a>
 # Part 6: Spark SQL & Optimization
 
 ---
@@ -540,6 +562,7 @@ Both are **columnar**, support predicate pushdown and column pruning, and are sp
 
 ---
 
+<a id="part-7-streaming"></a>
 # Part 7: Streaming
 
 ---
@@ -596,6 +619,7 @@ Both are **columnar**, support predicate pushdown and column pruning, and are sp
 
 ---
 
+<a id="part-8-production-design"></a>
 # Part 8: Production & Design
 
 ---
@@ -691,6 +715,7 @@ Both are **columnar**, support predicate pushdown and column pruning, and are sp
 
 ---
 
+<a id="part-9-summary-and-differentiation"></a>
 # Part 9: Summary and Differentiation
 
 ---

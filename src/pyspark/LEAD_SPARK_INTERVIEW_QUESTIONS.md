@@ -4,6 +4,23 @@ Concept-focused questions on shuffling, partitioning, joins, skew, tuning, and e
 
 ---
 
+## Table of contents
+
+| Section | Questions |
+|---------|-----------|
+| [Shuffling](#shuffling) | 1–3 |
+| [Partitioning](#partitioning) | 4–7 |
+| [Broadcast Joins](#broadcast-joins) | 8–10 |
+| [Data Skew](#data-skew) | 11–14 |
+| [Execution Model & DAG](#execution-model-dag) | 15–17 |
+| [Tuning & Configuration](#tuning-configuration) | 18–20 |
+| [Reliability & Correctness](#reliability-correctness) | 21–23 |
+| [File Formats & I/O](#file-formats-io) | 24–26 |
+| [Miscellaneous (Lead-Level)](#miscellaneous-lead-level) | 27–30 |
+
+---
+
+<a id="shuffling"></a>
 ## Shuffling
 
 **1. What is a shuffle in Spark, and when does it occur?**
@@ -20,6 +37,7 @@ Shuffle is one of the main bottlenecks: network transfer, serialization, disk I/
 
 ---
 
+<a id="partitioning"></a>
 ## Partitioning
 
 **4. What is a partition, and how does Spark use partitions during execution?**
@@ -40,6 +58,7 @@ After a wide operation like `groupBy` or join, Spark applies a *partitioner* (de
 
 ---
 
+<a id="broadcast-joins"></a>
 ## Broadcast Joins
 
 **8. What is a broadcast join, and when should you use it?**
@@ -56,6 +75,7 @@ Risks: (1) Out-of-memory on the driver or executors (each executor holds a full 
 
 ---
 
+<a id="data-skew"></a>
 ## Data Skew
 
 **11. What is data skew, and why is it a problem?**
@@ -80,6 +100,7 @@ Salting adds a random component to the key so that one logical key is spread acr
 
 ---
 
+<a id="execution-model-dag"></a>
 ## Execution Model & DAG
 
 **15. What is the difference between a transformation and an action? How does that relate to lazy evaluation?**
@@ -96,6 +117,7 @@ Spark builds a DAG of stages. Stages are separated by shuffle boundaries (wide d
 
 ---
 
+<a id="tuning-configuration"></a>
 ## Tuning & Configuration
 
 **18. What key configs would you tune for a large Spark job (e.g. executor memory, shuffle partitions, dynamic allocation)?**
@@ -117,6 +139,7 @@ Use when a DataFrame (or RDD) is reused multiple times (e.g. branched logic, ite
 
 ---
 
+<a id="reliability-correctness"></a>
 ## Reliability & Correctness
 
 **21. What does “at least once” vs “exactly once” mean in the context of Spark writes?**
@@ -133,6 +156,7 @@ Duplicates: If the write is append-only and tasks are retried, retried tasks can
 
 ---
 
+<a id="file-formats-io"></a>
 ## File Formats & I/O
 
 **24. Why is Parquet often preferred over CSV for large-scale Spark workloads?**
@@ -149,6 +173,7 @@ Predicate pushdown means pushing filters down to the data source so that only da
 
 ---
 
+<a id="miscellaneous-lead-level"></a>
 ## Miscellaneous (Lead-Level)
 
 **27. How would you approach debugging a Spark job that is slow or failing?**
