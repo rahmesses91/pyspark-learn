@@ -1,0 +1,401 @@
+product_id,product_name,category,price
+1,Outdoor Food 5lb,Treats,49.49
+2,Kitten Pads,Toys,69.34
+3,Premium Brush,Pet Food,72.62
+4,Adult Shampoo,Small Pet,127.42
+5,Chicken Bowl,Pet Food,89.03
+6,Grain-Free Pads,Aquarium,84.95
+7,Grain-Free Brush,Toys,42.4
+8,Senior Pads,Collars,23.44
+9,Outdoor Biscuits,Toys,131.32
+10,Outdoor Food 12lb,Supplies,21.58
+11,Natural Biscuits,Small Pet,78.46
+12,Weight Bed Medium,Pet Food,85.23
+13,Beef Food 12lb,Wild Bird,148.83
+14,Senior Food 5lb,Small Pet,127.5
+15,Adult Food 12lb,Aquarium,39.02
+16,Organic Food 24lb,Litter,69.34
+17,Joint Food 24lb,Supplies,34.58
+18,Sensitive Collar,Small Pet,65.31
+19,Outdoor Bowl,Health,25.74
+20,Kitten Collar,Grooming,146.38
+21,Outdoor Collar,Collars,141.65
+22,Puppy Food 5lb,Toys,58.39
+23,Puppy Treats 12oz,Aquarium,8.69
+24,Indoor Chews,Grooming,79.06
+25,Joint Collar,Supplies,59.92
+26,Sensitive Food 12lb,Small Pet,110.3
+27,Wild Food 24lb,Treats,143.99
+28,Beef Supplement 60ct,Aquarium,96.39
+29,Hairball Treats 6oz,Litter,120.73
+30,Indoor Shampoo,Small Pet,81.03
+31,Weight Bed Medium,Health,33.27
+32,Sensitive Litter 14lb,Supplies,52.65
+33,Adult Pellets,Collars,50.64
+34,Organic Pellets,Collars,111.25
+35,Hairball Collar,Treats,56.03
+36,Joint Food 24lb,Grooming,99.72
+37,Indoor Pellets,Collars,119.0
+38,Beef Treats 12oz,Litter,40.51
+39,Hairball Treats 12oz,Aquarium,42.73
+40,Puppy Bed Medium,Grooming,22.09
+41,Hairball Bowl,Litter,147.56
+42,Sensitive Shampoo,Small Pet,132.8
+43,Chicken Biscuits,Collars,7.24
+44,Organic Bowl,Health,115.99
+45,Dental Treats 6oz,Toys,131.06
+46,Hairball Food 5lb,Wild Bird,29.2
+47,Grain-Free Treats 12oz,Litter,130.69
+48,Wild Bowl,Grooming,23.47
+49,Skin & Coat Pellets,Wild Bird,47.53
+50,Kitten Bed Medium,Aquarium,93.26
+51,Organic Food 12lb,Treats,112.11
+52,Adult Brush,Beds,96.46
+53,Hairball Litter 14lb,Collars,106.51
+54,Salmon Supplement 60ct,Treats,27.07
+55,Premium Collar,Small Pet,99.15
+56,Wild Bed Medium,Collars,30.61
+57,Sensitive Pads,Treats,38.67
+58,Dental Bed Medium,Pet Food,86.79
+59,Joint Supplement 60ct,Beds,46.35
+60,Wild Bed Medium,Toys,143.25
+61,Natural Chews,Beds,80.26
+62,Sensitive Bed Medium,Treats,55.36
+63,Salmon Treats 6oz,Health,44.7
+64,Weight Pellets,Toys,46.82
+65,Senior Treats 6oz,Supplies,101.62
+66,Blue Treats 6oz,Supplies,85.05
+67,Joint Biscuits,Pet Food,91.76
+68,Natural Chews,Pet Food,75.8
+69,Premium Collar,Supplies,45.86
+70,Sensitive Bowl,Wild Bird,69.49
+71,Blue Brush,Health,138.1
+72,Organic Brush,Beds,76.51
+73,Grain-Free Treats 12oz,Health,111.08
+74,Organic Collar,Treats,112.91
+75,Beef Food 24lb,Grooming,27.72
+76,Kitten Pads,Collars,96.43
+77,Joint Food 24lb,Wild Bird,104.74
+78,Natural Bowl,Treats,140.18
+79,Joint Bed Medium,Supplies,127.0
+80,Outdoor Food 12lb,Small Pet,95.95
+81,Beef Treats 12oz,Aquarium,59.54
+82,Beef Chews,Health,73.16
+83,Dental Biscuits,Wild Bird,77.02
+84,Blue Chews,Small Pet,131.99
+85,Joint Chews,Pet Food,67.97
+86,Dental Chews,Wild Bird,30.82
+87,Hairball Pads,Aquarium,60.13
+88,Sensitive Pellets,Small Pet,55.55
+89,Joint Biscuits,Health,126.89
+90,Puppy Shampoo,Collars,120.52
+91,Wild Collar,Litter,74.73
+92,Organic Pellets,Treats,144.61
+93,Puppy Bowl,Collars,52.17
+94,Hairball Treats 6oz,Toys,72.38
+95,Kitten Treats 6oz,Grooming,106.05
+96,Blue Shampoo,Collars,92.14
+97,Beef Food 5lb,Health,43.84
+98,Chicken Bowl,Pet Food,86.52
+99,Kitten Pads,Small Pet,51.04
+100,Wild Brush,Beds,62.8
+101,Natural Pads,Collars,110.58
+102,Kitten Food 12lb,Health,69.9
+103,Beef Biscuits,Litter,34.89
+104,Outdoor Treats 6oz,Aquarium,93.55
+105,Blue Food 5lb,Wild Bird,8.05
+106,Wild Food 24lb,Wild Bird,53.32
+107,Adult Food 24lb,Small Pet,12.13
+108,Chicken Collar,Litter,33.76
+109,Salmon Leash,Wild Bird,38.24
+110,Salmon Collar,Grooming,64.93
+111,Skin & Coat Pellets,Pet Food,10.22
+112,Premium Supplement 60ct,Treats,77.71
+113,Dental Food 12lb,Toys,46.04
+114,Premium Pellets,Small Pet,116.99
+115,Beef Food 12lb,Health,113.73
+116,Wild Leash,Toys,123.64
+117,Senior Food 24lb,Treats,15.7
+118,Hairball Food 5lb,Pet Food,112.67
+119,Skin & Coat Treats 12oz,Treats,111.69
+120,Wild Chews,Aquarium,129.59
+121,Kitten Bowl,Litter,112.8
+122,Puppy Pads,Collars,34.38
+123,Senior Shampoo,Beds,47.22
+124,Grain-Free Pellets,Beds,86.33
+125,Dental Litter 14lb,Wild Bird,82.3
+126,Beef Leash,Pet Food,149.0
+127,Wild Collar,Litter,108.6
+128,Weight Pellets,Aquarium,146.39
+129,Wild Pellets,Collars,58.61
+130,Sensitive Treats 6oz,Small Pet,50.03
+131,Blue Food 24lb,Treats,86.32
+132,Chicken Shampoo,Aquarium,41.24
+133,Blue Leash,Aquarium,126.51
+134,Joint Pellets,Pet Food,116.26
+135,Senior Bowl,Health,112.36
+136,Blue Food 12lb,Grooming,104.89
+137,Indoor Bowl,Pet Food,43.87
+138,Chicken Shampoo,Litter,77.46
+139,Outdoor Pellets,Grooming,71.89
+140,Dental Supplement 60ct,Litter,129.49
+141,Grain-Free Treats 6oz,Beds,106.38
+142,Wild Treats 12oz,Pet Food,28.49
+143,Organic Biscuits,Supplies,68.44
+144,Organic Food 12lb,Beds,76.79
+145,Outdoor Supplement 60ct,Collars,25.27
+146,Skin & Coat Bowl,Beds,6.33
+147,Organic Bowl,Health,109.38
+148,Senior Supplement 60ct,Grooming,94.18
+149,Adult Biscuits,Toys,47.07
+150,Chicken Collar,Litter,92.65
+151,Dental Brush,Supplies,140.74
+152,Blue Biscuits,Litter,108.68
+153,Dental Food 5lb,Grooming,65.35
+154,Blue Shampoo,Treats,149.02
+155,Premium Litter 14lb,Wild Bird,32.2
+156,Organic Brush,Grooming,18.72
+157,Indoor Brush,Aquarium,27.68
+158,Adult Pellets,Grooming,96.17
+159,Chicken Pads,Health,124.0
+160,Hairball Litter 14lb,Grooming,95.54
+161,Wild Pads,Litter,83.44
+162,Chicken Food 24lb,Aquarium,27.09
+163,Chicken Pads,Toys,43.12
+164,Organic Treats 12oz,Litter,90.15
+165,Wild Bed Medium,Aquarium,116.93
+166,Sensitive Pads,Wild Bird,131.33
+167,Dental Chews,Toys,5.38
+168,Beef Chews,Treats,139.77
+169,Indoor Treats 12oz,Toys,28.89
+170,Premium Bed Medium,Treats,134.9
+171,Natural Treats 12oz,Litter,122.04
+172,Hairball Shampoo,Grooming,48.86
+173,Organic Pellets,Litter,62.01
+174,Wild Shampoo,Grooming,50.2
+175,Joint Bed Medium,Litter,16.33
+176,Indoor Chews,Toys,142.09
+177,Senior Treats 12oz,Beds,86.26
+178,Dental Pads,Small Pet,22.42
+179,Hairball Collar,Toys,8.66
+180,Adult Brush,Small Pet,55.16
+181,Hairball Chews,Aquarium,86.16
+182,Chicken Leash,Grooming,30.95
+183,Premium Chews,Collars,57.33
+184,Chicken Food 5lb,Aquarium,50.0
+185,Organic Collar,Health,77.9
+186,Premium Pads,Pet Food,98.84
+187,Outdoor Shampoo,Beds,11.36
+188,Senior Pads,Small Pet,13.29
+189,Sensitive Food 5lb,Wild Bird,139.49
+190,Indoor Brush,Collars,30.19
+191,Outdoor Treats 6oz,Pet Food,58.57
+192,Indoor Treats 12oz,Wild Bird,111.74
+193,Blue Food 24lb,Beds,125.93
+194,Organic Food 12lb,Collars,97.42
+195,Natural Bed Medium,Treats,129.38
+196,Senior Chews,Small Pet,94.02
+197,Premium Bed Medium,Small Pet,127.98
+198,Kitten Biscuits,Aquarium,109.7
+199,Adult Supplement 60ct,Pet Food,141.37
+200,Wild Bowl,Small Pet,102.09
+201,Grain-Free Chews,Litter,26.38
+202,Senior Food 24lb,Toys,69.28
+203,Senior Chews,Wild Bird,78.28
+204,Salmon Food 5lb,Health,44.69
+205,Adult Treats 6oz,Grooming,72.6
+206,Grain-Free Brush,Treats,21.85
+207,Grain-Free Biscuits,Wild Bird,17.52
+208,Kitten Food 5lb,Toys,119.36
+209,Chicken Collar,Collars,16.77
+210,Beef Litter 14lb,Small Pet,98.13
+211,Chicken Treats 12oz,Health,12.72
+212,Puppy Biscuits,Health,25.35
+213,Kitten Bowl,Supplies,126.1
+214,Senior Chews,Toys,146.99
+215,Senior Brush,Health,18.39
+216,Adult Collar,Grooming,116.98
+217,Joint Brush,Small Pet,104.61
+218,Salmon Food 12lb,Aquarium,60.91
+219,Skin & Coat Chews,Wild Bird,67.9
+220,Outdoor Litter 14lb,Supplies,54.61
+221,Joint Pads,Treats,79.41
+222,Chicken Pads,Supplies,72.8
+223,Natural Treats 6oz,Litter,100.45
+224,Salmon Shampoo,Toys,72.74
+225,Kitten Collar,Aquarium,59.79
+226,Sensitive Food 12lb,Grooming,106.68
+227,Outdoor Collar,Pet Food,28.01
+228,Dental Bed Medium,Grooming,98.93
+229,Organic Biscuits,Grooming,49.4
+230,Weight Biscuits,Pet Food,68.65
+231,Indoor Brush,Aquarium,88.5
+232,Hairball Leash,Collars,125.93
+233,Senior Collar,Aquarium,53.98
+234,Wild Litter 14lb,Pet Food,145.75
+235,Beef Supplement 60ct,Treats,66.03
+236,Senior Leash,Aquarium,9.13
+237,Joint Biscuits,Health,133.55
+238,Joint Chews,Aquarium,114.01
+239,Blue Bed Medium,Pet Food,145.69
+240,Puppy Treats 12oz,Grooming,71.5
+241,Salmon Brush,Pet Food,100.49
+242,Chicken Biscuits,Health,49.58
+243,Salmon Pellets,Supplies,68.29
+244,Beef Treats 12oz,Small Pet,85.52
+245,Adult Food 5lb,Collars,28.09
+246,Organic Shampoo,Litter,104.57
+247,Chicken Shampoo,Small Pet,59.55
+248,Weight Pellets,Treats,61.19
+249,Kitten Treats 12oz,Beds,117.11
+250,Puppy Bowl,Aquarium,62.1
+251,Grain-Free Collar,Collars,102.12
+252,Sensitive Food 5lb,Supplies,133.4
+253,Salmon Pellets,Grooming,57.52
+254,Joint Food 5lb,Aquarium,91.87
+255,Wild Food 24lb,Small Pet,38.35
+256,Dental Chews,Pet Food,35.62
+257,Hairball Food 24lb,Grooming,60.68
+258,Salmon Bowl,Toys,46.31
+259,Wild Shampoo,Pet Food,42.84
+260,Hairball Biscuits,Toys,62.73
+261,Joint Treats 6oz,Collars,121.89
+262,Adult Treats 6oz,Small Pet,130.05
+263,Premium Biscuits,Grooming,23.66
+264,Joint Leash,Small Pet,70.92
+265,Dental Leash,Beds,116.84
+266,Puppy Bowl,Health,112.59
+267,Organic Brush,Litter,59.05
+268,Dental Bed Medium,Litter,145.9
+269,Organic Biscuits,Beds,82.09
+270,Wild Food 24lb,Toys,6.0
+271,Sensitive Pads,Supplies,79.65
+272,Indoor Brush,Beds,12.03
+273,Puppy Food 12lb,Treats,130.84
+274,Weight Collar,Pet Food,133.92
+275,Adult Pads,Beds,53.92
+276,Puppy Food 5lb,Litter,43.74
+277,Puppy Collar,Beds,7.53
+278,Kitten Litter 14lb,Small Pet,10.15
+279,Organic Collar,Wild Bird,10.3
+280,Wild Pellets,Toys,17.18
+281,Organic Treats 12oz,Wild Bird,25.96
+282,Dental Bowl,Health,55.07
+283,Weight Pellets,Wild Bird,123.96
+284,Sensitive Brush,Pet Food,16.09
+285,Adult Food 12lb,Toys,93.35
+286,Outdoor Treats 6oz,Beds,79.32
+287,Grain-Free Bed Medium,Small Pet,113.63
+288,Hairball Leash,Pet Food,31.66
+289,Senior Food 24lb,Beds,144.94
+290,Chicken Pads,Health,94.25
+291,Skin & Coat Pellets,Wild Bird,120.84
+292,Adult Shampoo,Supplies,115.29
+293,Hairball Pads,Wild Bird,104.88
+294,Salmon Pads,Litter,102.35
+295,Indoor Leash,Toys,103.33
+296,Senior Food 5lb,Beds,35.02
+297,Hairball Treats 12oz,Health,43.71
+298,Indoor Bed Medium,Treats,37.08
+299,Premium Bed Medium,Supplies,14.23
+300,Puppy Brush,Aquarium,66.0
+301,Indoor Bed Medium,Litter,61.4
+302,Skin & Coat Food 5lb,Grooming,54.38
+303,Adult Brush,Toys,71.97
+304,Dental Chews,Litter,106.16
+305,Wild Pads,Beds,9.67
+306,Sensitive Food 24lb,Small Pet,75.54
+307,Adult Food 24lb,Supplies,113.45
+308,Joint Collar,Health,47.3
+309,Kitten Brush,Small Pet,72.76
+310,Blue Biscuits,Aquarium,55.98
+311,Hairball Bowl,Pet Food,113.94
+312,Puppy Shampoo,Supplies,59.41
+313,Skin & Coat Treats 12oz,Beds,93.02
+314,Organic Treats 6oz,Beds,36.64
+315,Organic Litter 14lb,Toys,130.4
+316,Wild Bowl,Grooming,113.93
+317,Hairball Pads,Grooming,116.71
+318,Outdoor Treats 6oz,Small Pet,133.28
+319,Outdoor Bed Medium,Litter,82.66
+320,Wild Pellets,Beds,76.74
+321,Weight Litter 14lb,Collars,27.75
+322,Salmon Leash,Health,5.47
+323,Kitten Brush,Small Pet,29.97
+324,Organic Leash,Aquarium,99.69
+325,Hairball Bowl,Supplies,97.27
+326,Indoor Pellets,Toys,93.4
+327,Joint Food 24lb,Aquarium,87.72
+328,Hairball Food 5lb,Grooming,93.41
+329,Salmon Shampoo,Small Pet,18.18
+330,Adult Food 5lb,Wild Bird,92.18
+331,Outdoor Leash,Litter,79.13
+332,Chicken Biscuits,Collars,58.5
+333,Beef Biscuits,Collars,140.88
+334,Chicken Bed Medium,Toys,47.47
+335,Premium Chews,Aquarium,71.86
+336,Beef Brush,Supplies,120.52
+337,Weight Supplement 60ct,Small Pet,21.11
+338,Indoor Bed Medium,Toys,40.5
+339,Grain-Free Food 5lb,Wild Bird,9.68
+340,Hairball Supplement 60ct,Collars,130.0
+341,Grain-Free Bowl,Health,133.08
+342,Skin & Coat Treats 6oz,Wild Bird,117.6
+343,Outdoor Food 5lb,Collars,74.71
+344,Natural Litter 14lb,Beds,125.09
+345,Natural Collar,Beds,108.9
+346,Joint Brush,Beds,119.17
+347,Organic Treats 12oz,Health,114.89
+348,Sensitive Treats 6oz,Wild Bird,29.49
+349,Hairball Bed Medium,Toys,137.37
+350,Dental Chews,Health,19.07
+351,Outdoor Food 24lb,Collars,135.37
+352,Dental Pellets,Health,54.64
+353,Weight Bed Medium,Collars,106.43
+354,Sensitive Pads,Aquarium,10.17
+355,Blue Treats 12oz,Litter,46.81
+356,Beef Collar,Aquarium,57.59
+357,Puppy Litter 14lb,Wild Bird,27.94
+358,Outdoor Litter 14lb,Collars,108.39
+359,Puppy Treats 12oz,Wild Bird,121.74
+360,Blue Treats 12oz,Aquarium,47.38
+361,Wild Pads,Small Pet,38.04
+362,Chicken Litter 14lb,Toys,89.7
+363,Senior Collar,Wild Bird,78.74
+364,Joint Leash,Collars,94.67
+365,Salmon Collar,Small Pet,27.59
+366,Joint Bed Medium,Litter,59.27
+367,Dental Biscuits,Litter,74.89
+368,Dental Leash,Pet Food,101.96
+369,Grain-Free Bed Medium,Supplies,49.84
+370,Beef Treats 12oz,Health,93.24
+371,Organic Chews,Grooming,77.31
+372,Sensitive Food 5lb,Wild Bird,127.62
+373,Joint Pellets,Wild Bird,34.36
+374,Natural Leash,Small Pet,19.32
+375,Kitten Supplement 60ct,Treats,44.35
+376,Skin & Coat Food 24lb,Pet Food,69.75
+377,Joint Pellets,Supplies,42.12
+378,Salmon Pellets,Supplies,104.99
+379,Weight Biscuits,Pet Food,147.0
+380,Senior Pads,Treats,112.74
+381,Grain-Free Treats 12oz,Litter,48.89
+382,Chicken Pellets,Supplies,89.91
+383,Sensitive Shampoo,Collars,19.24
+384,Natural Bed Medium,Small Pet,15.58
+385,Dental Treats 6oz,Collars,17.08
+386,Chicken Treats 6oz,Litter,90.45
+387,Indoor Shampoo,Health,87.54
+388,Sensitive Bowl,Treats,109.39
+389,Weight Chews,Aquarium,121.83
+390,Indoor Brush,Pet Food,41.49
+391,Hairball Pads,Collars,96.5
+392,Kitten Supplement 60ct,Collars,79.55
+393,Outdoor Litter 14lb,Health,130.74
+394,Beef Bed Medium,Health,103.28
+395,Joint Litter 14lb,Small Pet,68.8
+396,Salmon Shampoo,Pet Food,51.28
+397,Joint Shampoo,Collars,28.64
+398,Grain-Free Bowl,Small Pet,49.16
+399,Weight Bed Medium,Small Pet,104.6
+400,Salmon Chews,Treats,115.6

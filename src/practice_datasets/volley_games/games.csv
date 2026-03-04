@@ -1,0 +1,26 @@
+game_id,game_name,category,difficulty,release_date,is_premium
+1,Voice Trivia Challenge,trivia,medium,2024-02-24,0
+2,Word Wizard,kids,hard,2023-02-08,0
+3,Mystery Manor,word_game,easy,2023-05-19,0
+4,Brain Teasers,word_game,medium,2024-05-13,1
+5,Song Quiz,adventure,hard,2024-06-05,0
+6,Kids Adventure,trivia,hard,2023-10-05,0
+7,Math Masters,adventure,easy,2023-08-24,0
+8,History Hunt,educational,easy,2024-02-26,0
+9,Spelling Bee,kids,hard,2024-02-16,0
+10,Geography Genius,word_game,easy,2023-01-04,0
+11,Science Quest,music,medium,2023-10-12,0
+12,Movie Mania,trivia,hard,2023-11-24,0
+13,Sports Trivia,kids,medium,2023-12-03,1
+14,Music Maestro,puzzle,medium,2024-05-17,0
+15,Animal Kingdom,puzzle,hard,2023-01-22,0
+16,Space Explorer,educational,medium,2023-05-03,0
+17,Riddle Me This,word_game,medium,2023-10-05,0
+18,Vocabulary Builder,trivia,hard,2024-05-30,0
+19,Quick Math,kids,hard,2024-04-26,0
+20,Story Time,kids,easy,2024-06-08,0
+21,Language Lab,puzzle,easy,2023-10-18,0
+22,Puzzle Palace,kids,easy,2023-04-07,0
+23,Memory Master,word_game,hard,2023-04-26,0
+24,Logic Land,word_game,hard,2024-03-05,1
+25,Fun Facts,adventure,easy,2023-05-17,0

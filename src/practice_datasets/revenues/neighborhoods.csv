@@ -1,0 +1,51 @@
+neighborhood_id,name,city,state,zip_code,population,households,median_income,neighborhood_type,latitude,longitude,created_at
+1,North Judithbury Village,East Jill,TX,97581,19592,8825,109196,Urban,41.938838,-87.781528,2023-07-26
+2,New Roberttown Commons,East Jessetown,OH,26563,76482,33699,53331,Urban,30.028673,-97.205459,2022-11-11
+3,Robinsonshire Grove,Lisatown,WV,21427,8478,3200,154974,Urban,38.553111,-80.481325,2022-10-16
+4,Joshuaborough Park,Curtisfurt,CT,47553,5851,2084,155785,Suburban,28.576028,-72.353281,2023-05-22
+5,Lindsaymouth Commons,South Christianport,MP,82898,49118,21526,70353,Suburban,32.910982,-110.451352,2022-06-22
+6,Barbaraland Grove,Lake Jeremyport,CO,31013,10695,3841,77722,Rural,33.706291,-94.637765,2023-06-19
+7,Ramirezstad Heights,West Michael,TN,35494,52400,19685,57012,Suburban,42.780572,-70.812816,2022-10-21
+8,New Cynthiaside Commons,East Steven,KY,84387,35512,12274,117869,Suburban,44.18454,-116.054025,2022-10-01
+9,Lake Mark Village,East Lydiamouth,MO,35594,51566,21779,63717,Suburban,28.936189,-84.898026,2020-04-06
+10,Jasonfort Village,Wilkersonmouth,FL,35219,26417,10279,102570,Suburban,44.385594,-82.320005,2020-07-22
+11,Juliechester Village,Coxberg,NY,65187,35021,12256,150162,Urban,29.852605,-73.139966,2020-05-12
+12,Port Danielburgh Commons,Carlsonfurt,MS,78605,46245,19511,148712,Rural,39.785593,-117.142063,2023-12-25
+13,Tashatown Grove,Lake Nicoleview,WI,84513,23301,9719,113876,Suburban,34.853978,-92.905689,2021-05-11
+14,Ryanmouth Park,Lake Nancyview,NY,23917,52447,22078,178569,Suburban,42.38299,-77.63934,2022-01-11
+15,Port Colleenhaven Commons,East Nathaniel,GA,71198,25033,9264,61653,Suburban,38.705434,-99.257256,2023-10-24
+16,New Mariotown Heights,West Natashaport,IA,08093,37953,12749,75029,Suburban,37.350318,-110.324615,2020-12-17
+17,North Jessicaland Commons,East Donna,OH,22144,49587,21660,86460,Suburban,46.937766,-76.828088,2021-01-21
+18,Brandtside Park,Lake Larry,TN,85681,39522,13273,178085,Rural,45.021927,-108.585536,2021-06-29
+19,Martinezbury Park,West Andrewside,IN,77629,71540,26622,143019,Suburban,37.405718,-82.175544,2020-11-17
+20,Lake Crystalbury Grove,North Micheleland,NY,31696,74514,25389,129975,Suburban,27.572958,-105.036058,2021-02-10
+21,Lewisberg Park,Sanchezfort,AS,53855,45306,18944,65645,Urban,36.177781,-121.193311,2020-10-04
+22,Lake Ryanchester Park,Owenston,TX,86150,74822,26601,169592,Rural,28.79792,-95.977942,2023-12-07
+23,North Richardmouth Grove,East Jamesside,NV,18874,60461,20347,97730,Suburban,34.176823,-88.057217,2021-09-07
+24,Stevenland Grove,Mortonside,CT,07131,53944,21150,163354,Urban,30.168039,-106.405294,2022-08-10
+25,North Sarabury Park,South Todd,IL,53066,77603,32550,46885,Urban,39.515368,-112.408202,2023-08-10
+26,South Aaron Heights,Bakermouth,LA,55945,9117,3157,179782,Urban,40.386489,-113.216976,2022-10-14
+27,Mooreport Grove,North Beth,ND,08490,22342,8040,168907,Urban,35.878378,-102.611702,2022-12-28
+28,North Breannahaven Commons,North Susan,CO,24857,17363,7623,137876,Suburban,35.741567,-84.900828,2020-04-10
+29,Lake Michellefurt Village,New Johnton,RI,11246,17899,7960,73644,Urban,29.374805,-100.326255,2021-09-04
+30,Sarahborough Commons,Johnfurt,DC,88540,60296,25692,110485,Rural,26.733852,-80.558777,2022-07-31
+31,Stewartland Grove,South Christineshire,CT,10103,77132,33854,48868,Rural,46.306441,-78.321735,2022-02-23
+32,Davidstad Commons,East Mikeburgh,NV,71701,26798,10612,101032,Rural,45.756186,-115.944958,2022-10-24
+33,Lake Lisaport Village,East Josephville,WA,73013,5282,1767,164277,Urban,41.021605,-84.822208,2020-08-14
+34,Cassandramouth Commons,Lake Cynthia,KS,66745,77845,28519,85579,Urban,30.007121,-121.783419,2021-12-14
+35,North Cynthiaview Village,North Matthewberg,SC,34836,76066,33825,59985,Urban,35.966136,-74.433708,2020-08-23
+36,Arnoldchester Grove,North Charlesberg,ND,05223,74615,32079,66000,Rural,26.575991,-121.262153,2023-05-03
+37,South David Grove,Michaelton,MH,47399,35828,14200,109543,Suburban,25.914058,-120.490913,2020-11-02
+38,Lake Curtis Village,Dicksonberg,IA,21800,79085,30205,98545,Suburban,32.226229,-110.391202,2023-11-26
+39,South Angel Village,Kimberlychester,AS,88307,22154,8093,164858,Suburban,42.292883,-121.010129,2023-06-15
+40,West Erik Grove,South Monicafort,IN,26659,65068,24126,71209,Urban,29.902549,-110.413977,2023-04-07
+41,Baileybury Park,North Donna,MO,43526,50745,17470,141869,Urban,35.078245,-95.123012,2021-02-10
+42,Port Joshuahaven Grove,Frazierside,MA,04118,44651,16602,47050,Suburban,37.755852,-73.753418,2020-06-17
+43,Gregoryview Park,North Candacestad,VA,41615,18577,6294,114328,Urban,27.461827,-94.5727,2021-09-29
+44,South Rachelborough Park,Bradleychester,AL,68647,40697,16779,134884,Urban,39.587473,-110.480885,2023-09-13
+45,West Ryan Heights,Cindyville,VA,39864,69032,28752,69195,Suburban,44.075006,-122.575228,2022-01-10
+46,Nguyenport Village,East Robert,MS,89278,48719,17295,87357,Suburban,37.68865,-101.477219,2022-12-28
+47,New Ashley Park,Kelleytown,ME,38107,6267,2737,54444,Rural,38.39772,-116.854842,2020-11-02
+48,Stevenmouth Village,New Thomas,MH,96964,21704,9717,55458,Rural,29.83176,-111.275864,2020-09-04
+49,West Zacharymouth Grove,Port Stephaniebury,TX,41188,18473,7439,151529,Rural,42.237985,-74.08299,2020-11-23
+50,East Andrew Park,South Cheryl,WI,10046,36029,12459,153080,Urban,41.940983,-106.729799,2021-10-26
