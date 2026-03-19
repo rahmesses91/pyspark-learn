@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Generate pandas_cheatsheet_40_functions.pdf from the cheatsheet content."""
 
+from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, ListFlowable, ListItem
-from reportlab.lib.enums import TA_LEFT
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 
 CONTENT = [
     ("Data Loading & Inspection", [
@@ -71,52 +71,63 @@ def main():
     doc = SimpleDocTemplate(
         "pandas_cheatsheet_40_functions.pdf",
         pagesize=letter,
-        leftMargin=0.5 * inch,
-        rightMargin=0.5 * inch,
-        topMargin=0.4 * inch,
-        bottomMargin=0.4 * inch,
+        leftMargin=0.35 * inch,
+        rightMargin=0.35 * inch,
+        topMargin=0.3 * inch,
+        bottomMargin=0.3 * inch,
     )
     styles = getSampleStyleSheet()
-    story = []
+    cell_style = ParagraphStyle(
+        name="Cell",
+        parent=styles["Normal"],
+        fontSize=7,
+        leading=8,
+    )
+
+    # Build single table: Category | Function | Description
+    data = [["Category", "Function", "Description"]]
+    for cat, items in CONTENT:
+        for i, (code, desc) in enumerate(items):
+            cat_cell = cat if i == 0 else ""
+            data.append([
+                cat_cell,
+                Paragraph(f'<font name="Courier" size="7">{code}</font>', cell_style),
+                desc,
+            ])
+
+    t = Table(data, colWidths=[1.5 * inch, 3.8 * inch, 2.2 * inch])
+    t.setStyle(TableStyle([
+        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 8),
+        ("FONT", (0, 1), (0, -1), "Helvetica", 7),
+        ("FONT", (1, 1), (1, -1), "Courier", 7),
+        ("FONT", (2, 1), (2, -1), "Helvetica", 7),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E0E0E0")),
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 3),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 3),
+        ("TOPPADDING", (0, 0), (-1, -1), 1),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F8F8F8")]),
+    ]))
 
     title_style = ParagraphStyle(
-        name="CustomTitle",
-        parent=styles["Heading1"],
-        fontSize=14,
-        spaceAfter=6,
-    )
-    heading_style = ParagraphStyle(
-        name="SectionHeading",
-        parent=styles["Heading2"],
-        fontSize=10,
-        spaceBefore=6,
-        spaceAfter=3,
-    )
-    code_style = ParagraphStyle(
-        name="Code",
+        name="Title",
         parent=styles["Normal"],
-        fontName="Courier",
-        fontSize=8,
-        leftIndent=0,
-        spaceAfter=1,
+        fontSize=11,
+        fontName="Helvetica-Bold",
+        spaceAfter=2,
     )
 
-    story.append(Paragraph("Pandas Cheatsheet — 40 Essential Functions (PDF-Ready)", title_style))
-    story.append(Spacer(1, 4))
-
-    for section_title, items in CONTENT:
-        story.append(Paragraph(section_title, heading_style))
-        for code, desc in items:
-            text = f'<font name="Courier" size="8">{code}</font> — {desc}'
-            story.append(Paragraph(text, code_style))
-        story.append(Spacer(1, 2))
-
-    story.append(Spacer(1, 4))
-    story.append(Paragraph(
-        "Optimized for 1-page printing • Minimal spacing • All 40 functions • Perfect for assessments",
-        ParagraphStyle(name="Footer", parent=styles["Normal"], fontSize=7, textColor="gray")
-    ))
-
+    story = [
+        Paragraph("Pandas Cheatsheet — 40 Essential Functions", title_style),
+        t,
+        Paragraph(
+            "1-page • 40 functions • Assessments",
+            ParagraphStyle(name="F", parent=styles["Normal"], fontSize=6, textColor="gray", spaceBefore=2)
+        ),
+    ]
     doc.build(story)
     print("Created: pandas_cheatsheet_40_functions.pdf")
 
