@@ -44,6 +44,8 @@ tornado==6.4.1
 traitlets==5.14.3
 
 # --- Misc Utilities ---
+# PDF cheatsheets (generate_*_pdf.py)
+reportlab>=4.0.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 packaging==24.1

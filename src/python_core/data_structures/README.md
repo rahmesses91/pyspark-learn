@@ -2,6 +2,11 @@
 
 This directory contains comprehensive learning materials for Python's core data structures, with examples focused on Data Engineering use cases.
 
+## Printable cheatsheet (repo root)
+
+- **`python_datastructures_cheatsheet.pdf`** — one-page summary of str, list, set, dict, tuple, and regex (`re`), aligned with these topics.
+- Regenerate: `python3 generate_python_datastructures_pdf.py` (requires `reportlab`).
+
 ## Directory Structure
 
 ```
