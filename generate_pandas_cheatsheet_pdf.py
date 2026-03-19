@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Generate pandas_cheatsheet_40_functions.pdf — single letter page, dense 3-col layout."""
+"""Generate pandas_cheatsheet_40_functions.pdf — single A4 page, dense 3-col layout."""
 
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer
@@ -109,15 +109,21 @@ CONTENT = [
     ]),
 ]
 
-# Letter 8.5" - margins → ~7.5" usable; 3 columns
-PAGE_USABLE = 7.5 * inch
-GAP = 0.12 * inch
+# A4 width minus side margins → usable width; 3 columns + gaps
+_A4_W_IN = A4[0] / 72.0
+MARGIN_LR_IN = 0.28
+MARGIN_TB_IN = 0.26
+MARGIN_LR = MARGIN_LR_IN * inch
+MARGIN_TB = MARGIN_TB_IN * inch
+PAGE_USABLE = (_A4_W_IN - 2 * MARGIN_LR_IN) * inch
+GAP = 0.10 * inch
 COL_W = (PAGE_USABLE - 2 * GAP) / 3
-CODE_W = COL_W * 0.58
-DESC_W = COL_W * 0.42
+
+CODE_PT = 7
+HEAD_PT = 8
 
 
-def make_section_table(title, items, para_style, section_width=None, code_pt=6, head_pt=7):
+def make_section_table(title, items, para_style, section_width=None, code_pt=CODE_PT, head_pt=HEAD_PT):
     """Compact Function | Description table; section_width defaults to one of 3 columns."""
     w = section_width if section_width is not None else COL_W
     cw = w * 0.58
@@ -139,8 +145,8 @@ def make_section_table(title, items, para_style, section_width=None, code_pt=6, 
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
         ("LEFTPADDING", (0, 0), (-1, -1), 2),
         ("RIGHTPADDING", (0, 0), (-1, -1), 2),
-        ("TOPPADDING", (0, 0), (-1, -1), 0),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 1),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
         ("GRID", (0, 0), (-1, -1), 0.25, colors.HexColor("#CCCCCC")),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F9F9F9")]),
     ]))
@@ -150,27 +156,27 @@ def make_section_table(title, items, para_style, section_width=None, code_pt=6, 
 def main():
     doc = SimpleDocTemplate(
         "pandas_cheatsheet_40_functions.pdf",
-        pagesize=letter,
-        leftMargin=0.28 * inch,
-        rightMargin=0.28 * inch,
-        topMargin=0.22 * inch,
-        bottomMargin=0.22 * inch,
+        pagesize=A4,
+        leftMargin=MARGIN_LR,
+        rightMargin=MARGIN_LR,
+        topMargin=MARGIN_TB,
+        bottomMargin=MARGIN_TB,
     )
     styles = getSampleStyleSheet()
     cell_style = ParagraphStyle(
         name="Cell",
         parent=styles["Normal"],
-        fontSize=6,
-        leading=7,
+        fontSize=CODE_PT,
+        leading=CODE_PT + 2,
     )
 
     title_style = ParagraphStyle(
         name="Title",
         parent=styles["Normal"],
-        fontSize=11,
+        fontSize=13,
         fontName="Helvetica-Bold",
-        spaceAfter=3,
-        leading=12,
+        spaceAfter=4,
+        leading=15,
     )
 
     col_widths_3 = [COL_W, GAP, COL_W, GAP, COL_W]
@@ -201,7 +207,7 @@ def main():
         return inner
 
     story = [
-        Paragraph("Pandas Cheatsheet — Essential Functions (1 page)", title_style),
+        Paragraph("Pandas Cheatsheet — Essential Functions (A4)", title_style),
     ]
 
     # Row 1: shorter sections — balances height across page
@@ -210,7 +216,7 @@ def main():
         make_section_table(CONTENT[1][0], CONTENT[1][1], cell_style),
         make_section_table(CONTENT[3][0], CONTENT[3][1], cell_style),
     ))
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 3))
 
     # Row 2: Cleaning | Aggregation | Joining
     story.append(row3(
@@ -218,7 +224,7 @@ def main():
         make_section_table(CONTENT[4][0], CONTENT[4][1], cell_style),
         make_section_table(CONTENT[5][0], CONTENT[5][1], cell_style),
     ))
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 3))
 
     # Row 3: Advanced — two half-width tables (full page width)
     story.append(row2_wide(
@@ -228,8 +234,8 @@ def main():
 
     story.append(Spacer(1, 1))
     story.append(Paragraph(
-        "80+ ops • 3-column layout • 1 page",
-        ParagraphStyle(name="F", parent=styles["Normal"], fontSize=6, textColor="gray", leading=7)
+        "80+ ops • 3-column layout • A4",
+        ParagraphStyle(name="F", parent=styles["Normal"], fontSize=7, textColor="gray", leading=8)
     ))
 
     doc.build(story)

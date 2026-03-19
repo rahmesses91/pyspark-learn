@@ -2,11 +2,11 @@
 """
 Generate python_datastructures_cheatsheet.pdf — str, list, set, dict, tuple, regex.
 Aligned with src/python_core/data_structures and src/python_core/regex READMEs.
-Single letter page, 3-column layout (same engine as pandas cheatsheet).
+Single A4 page, 3-column layout (tuned for print).
 """
 
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer
@@ -109,12 +109,22 @@ CONTENT = [
     ]),
 ]
 
-PAGE_USABLE = 7.5 * inch
-GAP = 0.12 * inch
+# A4: 210×297 mm — extra vertical space vs US Letter; slightly narrower width
+_A4_W_IN = A4[0] / 72.0
+MARGIN_LR_IN = 0.28
+MARGIN_TB_IN = 0.26
+MARGIN_LR = MARGIN_LR_IN * inch
+MARGIN_TB = MARGIN_TB_IN * inch
+PAGE_USABLE = (_A4_W_IN - 2 * MARGIN_LR_IN) * inch
+GAP = 0.10 * inch
 COL_W = (PAGE_USABLE - 2 * GAP) / 3
 
+# Larger type for A4 (readable when printed)
+CODE_PT = 7
+HEAD_PT = 8
 
-def make_section_table(title, items, para_style, section_width=None, code_pt=6, head_pt=7):
+
+def make_section_table(title, items, para_style, section_width=None, code_pt=CODE_PT, head_pt=HEAD_PT):
     w = section_width if section_width is not None else COL_W
     cw = w * 0.58
     dw = w * 0.42
@@ -140,8 +150,8 @@ def make_section_table(title, items, para_style, section_width=None, code_pt=6, 
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
         ("LEFTPADDING", (0, 0), (-1, -1), 2),
         ("RIGHTPADDING", (0, 0), (-1, -1), 2),
-        ("TOPPADDING", (0, 0), (-1, -1), 0),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 1),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
         ("GRID", (0, 0), (-1, -1), 0.25, colors.HexColor("#CCCCCC")),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F9F9F9")]),
     ]))
@@ -152,26 +162,26 @@ def main():
     out = "python_datastructures_cheatsheet.pdf"
     doc = SimpleDocTemplate(
         out,
-        pagesize=letter,
-        leftMargin=0.28 * inch,
-        rightMargin=0.28 * inch,
-        topMargin=0.22 * inch,
-        bottomMargin=0.22 * inch,
+        pagesize=A4,
+        leftMargin=MARGIN_LR,
+        rightMargin=MARGIN_LR,
+        topMargin=MARGIN_TB,
+        bottomMargin=MARGIN_TB,
     )
     styles = getSampleStyleSheet()
     cell_style = ParagraphStyle(
         name="CellDS",
         parent=styles["Normal"],
-        fontSize=6,
-        leading=7,
+        fontSize=CODE_PT,
+        leading=CODE_PT + 2,
     )
     title_style = ParagraphStyle(
         name="TitleDS",
         parent=styles["Normal"],
-        fontSize=11,
+        fontSize=13,
         fontName="Helvetica-Bold",
-        spaceAfter=3,
-        leading=12,
+        spaceAfter=4,
+        leading=15,
     )
     col_widths_3 = [COL_W, GAP, COL_W, GAP, COL_W]
 
@@ -188,24 +198,26 @@ def main():
 
     story = [
         Paragraph(
-            "Python: str, list, set, dict, tuple + regex (re) — 1 page",
+            "Python: str, list, set, dict, tuple + regex (re) — A4",
             title_style,
         ),
+        # Row 1: balance heights (~14 / 11 / 14); tuples shortest in middle
         row3(
             make_section_table(CONTENT[0][0], CONTENT[0][1], cell_style),
-            make_section_table(CONTENT[1][0], CONTENT[1][1], cell_style),
+            make_section_table(CONTENT[4][0], CONTENT[4][1], cell_style),
             make_section_table(CONTENT[2][0], CONTENT[2][1], cell_style),
         ),
-        Spacer(1, 2),
+        Spacer(1, 3),
+        # Row 2: lists + dict + regex
         row3(
+            make_section_table(CONTENT[1][0], CONTENT[1][1], cell_style),
             make_section_table(CONTENT[3][0], CONTENT[3][1], cell_style),
-            make_section_table(CONTENT[4][0], CONTENT[4][1], cell_style),
             make_section_table(CONTENT[5][0], CONTENT[5][1], cell_style),
         ),
-        Spacer(1, 1),
+        Spacer(1, 2),
         Paragraph(
-            "~80 ops • str, list, set, dict, tuple, re • DE-focused",
-            ParagraphStyle(name="FDS", parent=styles["Normal"], fontSize=6, textColor="gray", leading=7),
+            "~80 ops • str, tuple, set | list, dict, regex • A4 • DE-focused",
+            ParagraphStyle(name="FDS", parent=styles["Normal"], fontSize=7, textColor="gray", leading=8),
         ),
     ]
     doc.build(story)

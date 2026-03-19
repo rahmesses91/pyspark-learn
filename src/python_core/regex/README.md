@@ -26,7 +26,7 @@ The Python **`re`** module provides functions to:
 
 ## Printable cheatsheet (repo root)
 
-- **`python_datastructures_cheatsheet.pdf`** includes a **Regex (`re`)** column (match, search, findall, sub, split, compile, groups, common pattern syntax).
+- **`python_datastructures_cheatsheet.pdf`** (A4) includes a **Regex (`re`)** column (match, search, findall, sub, split, compile, groups, common pattern syntax).
 - Regenerate: `python3 generate_python_datastructures_pdf.py` (requires `reportlab`).
 
 ## Contents
