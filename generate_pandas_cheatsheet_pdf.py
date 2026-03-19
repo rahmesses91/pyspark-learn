@@ -5,7 +5,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer
 
 CONTENT = [
     ("Data Loading & Inspection", [
@@ -66,68 +66,96 @@ CONTENT = [
     ]),
 ]
 
+# Column width for each half of the page (letter = 8.5", minus margins)
+COL_WIDTH = 3.65 * inch
+CODE_WIDTH = 2.2 * inch
+DESC_WIDTH = 1.4 * inch
+
+
+def make_section_table(title, items, code_style):
+    """Build a compact 2-column table for one section (Function | Description)."""
+    data = [[Paragraph(f'<b>{title}</b>', code_style), ""]]
+    for code, desc in items:
+        data.append([
+            Paragraph(f'<font name="Courier" size="9">{code}</font>', code_style),
+            desc,
+        ])
+    t = Table(data, colWidths=[CODE_WIDTH, DESC_WIDTH])
+    t.setStyle(TableStyle([
+        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 10),
+        ("FONT", (0, 1), (0, -1), "Courier", 9),
+        ("FONT", (1, 1), (1, -1), "Helvetica", 9),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E0E0E0")),
+        ("SPAN", (0, 0), (-1, 0)),
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 4),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+        ("TOPPADDING", (0, 0), (-1, -1), 2),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F8F8F8")]),
+    ]))
+    return t
+
 
 def main():
     doc = SimpleDocTemplate(
         "pandas_cheatsheet_40_functions.pdf",
         pagesize=letter,
-        leftMargin=0.35 * inch,
-        rightMargin=0.35 * inch,
-        topMargin=0.3 * inch,
-        bottomMargin=0.3 * inch,
+        leftMargin=0.4 * inch,
+        rightMargin=0.4 * inch,
+        topMargin=0.35 * inch,
+        bottomMargin=0.35 * inch,
     )
     styles = getSampleStyleSheet()
-    cell_style = ParagraphStyle(
+    code_style = ParagraphStyle(
         name="Cell",
         parent=styles["Normal"],
-        fontSize=7,
-        leading=8,
+        fontSize=9,
+        leading=10,
     )
-
-    # Build single table: Category | Function | Description
-    data = [["Category", "Function", "Description"]]
-    for cat, items in CONTENT:
-        for i, (code, desc) in enumerate(items):
-            cat_cell = cat if i == 0 else ""
-            data.append([
-                cat_cell,
-                Paragraph(f'<font name="Courier" size="7">{code}</font>', cell_style),
-                desc,
-            ])
-
-    t = Table(data, colWidths=[1.5 * inch, 3.8 * inch, 2.2 * inch])
-    t.setStyle(TableStyle([
-        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 8),
-        ("FONT", (0, 1), (0, -1), "Helvetica", 7),
-        ("FONT", (1, 1), (1, -1), "Courier", 7),
-        ("FONT", (2, 1), (2, -1), "Helvetica", 7),
-        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E0E0E0")),
-        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
-        ("VALIGN", (0, 0), (-1, -1), "TOP"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 3),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 3),
-        ("TOPPADDING", (0, 0), (-1, -1), 1),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
-        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
-        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F8F8F8")]),
-    ]))
 
     title_style = ParagraphStyle(
         name="Title",
         parent=styles["Normal"],
-        fontSize=11,
+        fontSize=14,
         fontName="Helvetica-Bold",
-        spaceAfter=2,
+        spaceAfter=6,
     )
 
-    story = [
-        Paragraph("Pandas Cheatsheet — 40 Essential Functions", title_style),
-        t,
-        Paragraph(
-            "1-page • 40 functions • Assessments",
-            ParagraphStyle(name="F", parent=styles["Normal"], fontSize=6, textColor="gray", spaceBefore=2)
-        ),
+    story = [Paragraph("Pandas Cheatsheet — 40 Essential Functions", title_style)]
+
+    # Pair sections side by side: (Data Loading, Selecting), (Cleaning, Type), (Aggregation, Joining), (Advanced,)
+    pairs = [
+        (CONTENT[0], CONTENT[1]),   # Data Loading | Selecting & Filtering
+        (CONTENT[2], CONTENT[3]),   # Cleaning | Type Handling
+        (CONTENT[4], CONTENT[5]),   # Aggregation | Joining
+        (CONTENT[6], None),         # Advanced (full width)
     ]
+
+    for left, right in pairs:
+        t_left = make_section_table(left[0], left[1], code_style)
+        if right:
+            t_right = make_section_table(right[0], right[1], code_style)
+            row = Table([[t_left, t_right]], colWidths=[COL_WIDTH, COL_WIDTH])
+            row.setStyle(TableStyle([
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (0, -1), 0),
+                ("RIGHTPADDING", (0, 0), (0, -1), 6),
+                ("LEFTPADDING", (1, 0), (1, -1), 6),
+                ("RIGHTPADDING", (1, 0), (1, -1), 0),
+            ]))
+            story.append(row)
+        else:
+            story.append(t_left)
+        story.append(Spacer(1, 4))
+
+    story.append(Paragraph(
+        "1-page • 40 functions • Assessments",
+        ParagraphStyle(name="F", parent=styles["Normal"], fontSize=8, textColor="gray")
+    ))
+
     doc.build(story)
     print("Created: pandas_cheatsheet_40_functions.pdf")
 
