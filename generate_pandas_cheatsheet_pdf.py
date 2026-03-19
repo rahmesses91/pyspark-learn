@@ -11,57 +11,98 @@ CONTENT = [
     ("Data Loading & Inspection", [
         ('pd.read_csv("file.csv")', "Load CSV"),
         ('pd.read_json("data.json")', "Load JSON"),
+        ('pd.read_excel("file.xlsx")', "Load Excel"),
         ("df.info()", "Schema + nulls"),
         ("df.head(10)", "Preview rows"),
+        ("df.tail(5)", "Last rows"),
         ("df.sample(5)", "Random sample"),
         ("df.shape", "Rows/columns"),
+        ("df.dtypes", "Column types"),
+        ("df.columns", "Column names"),
         ("df.describe()", "Summary stats"),
     ]),
     ("Selecting & Filtering", [
         ("df['col']", "Select column"),
         ("df[['a','b']]", "Select multiple columns"),
+        ("df.iloc[0:5]", "Select by position"),
+        ("df.loc[df['x']>0]", "Select by label/condition"),
         ("df[df['age'] > 30]", "Boolean filter"),
         ("df[(df['age']>18) & (df['country']=='US')]", "Multi-condition"),
         ('df.query("country==\'US\'")', "SQL-style filter"),
         ("df[df['age'].between(20,30)]", "Range filter"),
+        ("df[df['id'].isin([1,2,3])]", "Is-in filter"),
     ]),
     ("Cleaning & Transforming", [
         ("df.dropna(subset=['id'])", "Drop missing"),
+        ("df.dropna(how='all')", "Drop all-null rows"),
+        ("df.dropna(inplace=True)", "Drop missing in-place"),
         ("df.fillna(0)", "Fill missing"),
+        ("df.fillna(0, inplace=True)", "Fill in-place"),
+        ("df.ffill()", "Forward fill"),
         ("df.drop_duplicates(subset=['id'])", "Deduplicate"),
         ("df.duplicated()", "Check duplicates"),
         ("df.columns.difference(['id'])", "Exclude columns"),
         ("df.reset_index(drop=True)", "Reset index"),
+        ("df.reset_index(drop=True, inplace=True)", "Reset index in-place"),
         ("df.rename(columns={'a':'A'})", "Rename"),
+        ("df.rename(columns={'a':'A'}, inplace=True)", "Rename in-place"),
         ("df.drop(columns=['col'])", "Drop column"),
+        ("df.drop(columns=['col'], inplace=True)", "Drop column in-place"),
         ("df.replace({'A':1})", "Replace values"),
+        ("df.assign(new_col=df['x']*2)", "Add column"),
         ("np.where(df['x']>0,1,0)", "Conditional column"),
     ]),
     ("Type Handling", [
         ("df['id'].astype('Int64')", "Cast type"),
+        ("df['id'].astype(str)", "To string"),
         ("pd.to_datetime(df['ts'])", "To datetime"),
         ("df['ts'].dt.date", "Extract date"),
         ("df['ts'].dt.year", "Extract year"),
+        ("df['ts'].dt.month", "Extract month"),
+        ("df['ts'].dt.dayofweek", "Day of week"),
     ]),
     ("Aggregation & Grouping", [
-        ("df.groupby('cat')['sales'].sum()", "Group + sum"),
+        ("df.groupby('cat')['sales'].sum()", "Single col group"),
+        ("df.groupby(['cat','region'])['sales'].sum()", "Multi-col group"),
+        ("df.groupby(['cat','region']).agg({'a':'sum','b':'mean'})", "Multi-col + multi-agg"),
+        ("df.groupby('cat').mean()", "Group mean"),
         ("df.groupby('id').agg({'a':'sum','b':'count'})", "Multi-agg"),
+        ("df.groupby('cat').size()", "Group size"),
         ("df['id'].count()", "Count"),
         ("df['user_id'].nunique()", "Unique count"),
         ("df['country'].value_counts()", "Frequency"),
         ("df.sort_values('sales', ascending=False)", "Sort"),
+        ("df.sort_values('sales', inplace=True)", "Sort in-place"),
+        ("df.nlargest(5, 'sales')", "Top N rows"),
     ]),
     ("Joining & Combining", [
-        ("pd.merge(a, b, on='id', how='left')", "SQL join"),
+        ("pd.merge(a, b, on='id', how='left')", "Left join"),
+        ("pd.merge(a, b, on='id', how='right')", "Right join"),
+        ("pd.merge(a, b, on='id', how='inner')", "Inner join"),
+        ("pd.merge(a, b, on='id', how='outer')", "Outer join"),
+        ("pd.merge(a, b, how='cross')", "Cross join"),
         ("df1.join(df2, how='left')", "Index join"),
         ("pd.concat([df1, df2])", "Stack DataFrames"),
+        ("pd.concat([df1, df2], axis=1)", "Concat columns"),
     ]),
     ("Advanced Operations", [
-        ("df['ma7'] = df['sales'].rolling(7).mean()", "Rolling window"),
+        ("df['ma7'] = df['sales'].rolling(7).mean()", "Rolling mean"),
+        ("df['lag'] = df['x'].shift(1)", "Lag column"),
         ("df['r'] = df.groupby('cat')['sales'].rank()", "Rank"),
+        ("df.groupby('cat').cumcount()", "Cumulative count per group"),
+        ("df['x'].cumsum()", "Cumulative sum"),
+        ("df.groupby('cat')['x'].cumsum()", "Cumsum per group"),
+        ("df['x'].cummax()", "Cumulative max"),
+        ("df['x'].cummin()", "Cumulative min"),
+        ("df['x'].pct_change()", "Pct change"),
+        ("df['x'].diff(1)", "Diff (lag diff)"),
         ("df.pivot_table(values='sales', index='cat', columns='region')", "Pivot"),
+        ("df.melt(id_vars=['id'])", "Wide to long"),
+        ("df.explode('col')", "Explode list col"),
         ("df['x2'] = df['x'].apply(lambda x: x*2)", "Apply"),
-        ("df['email'].str.lower()", "String ops"),
+        ("df['email'].str.lower()", "String lower"),
+        ("df['col'].str.contains('x')", "String contains"),
+        ("df['col'].str.split(',')", "String split"),
         ("df.loc[df['age']<0, 'age'] = 0", "Update rows"),
     ]),
 ]
@@ -124,7 +165,7 @@ def main():
         spaceAfter=6,
     )
 
-    story = [Paragraph("Pandas Cheatsheet — 40 Essential Functions", title_style)]
+    story = [Paragraph("Pandas Cheatsheet — Essential Functions", title_style)]
 
     # Pair sections side by side: (Data Loading, Selecting), (Cleaning, Type), (Aggregation, Joining), (Advanced,)
     pairs = [
@@ -152,7 +193,7 @@ def main():
         story.append(Spacer(1, 4))
 
     story.append(Paragraph(
-        "1-page • 40 functions • Assessments",
+        "1-page • 80+ functions • Assessments",
         ParagraphStyle(name="F", parent=styles["Normal"], fontSize=8, textColor="gray")
     ))
 
