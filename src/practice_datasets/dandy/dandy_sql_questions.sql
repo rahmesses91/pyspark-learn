@@ -1,0 +1,53 @@
+-- =============================================================================
+-- Dandy Senior Data Engineer Interview - SQL Problems (30 min)
+-- Candidate: Rahul Raj Singh
+-- =============================================================================
+
+-- =============================================================================
+-- Problem 3: Monthly Retained Clinics
+-- Difficulty: Medium | Focus: Self-joins & Time-series Analysis
+-- =============================================================================
+-- Scenario: The growth team needs to track clinic loyalty.
+--
+-- Task: Find the number of Retained Clinics for each month.
+-- Definition: A clinic is "Retained" in Month N if they placed at least one
+-- order in Month N AND at least one order in Month N-1.
+--
+-- Schema: orders (order_id, clinic_id, order_date)
+--
+-- Expected output columns: month, retained_clinic_count
+--
+-- Hint: Use DATE_TRUNC, LAG() window functions, or self-joins to compare
+-- consecutive months.
+-- =============================================================================
+
+-- YOUR ANSWER HERE
+-- SELECT ...
+-- FROM orders
+-- ...
+
+
+-- =============================================================================
+-- Problem 4: Sessionizing Impression Scans (Optional/Hard)
+-- Difficulty: Hard | Focus: Sessionization & Gap Analysis
+-- =============================================================================
+-- Scenario: Clinics often take multiple scans for one patient in one sitting.
+--
+-- Task: Group scans into "Sessions." A new session starts if the gap between
+-- consecutive scans is > 30 minutes. Calculate the total duration (first to
+-- last scan) per session.
+--
+-- Schema: scans (scan_id, clinic_id, patient_id, scan_timestamp)
+--
+-- Expected output: clinic_id, patient_id, session_id, first_scan, last_scan,
+--                  duration_minutes
+--
+-- Hint: Use "beginning of group" logic (compare current row to previous row)
+-- to create session IDs.
+-- =============================================================================
+
+-- YOUR ANSWER HERE
+-- WITH ...
+-- SELECT ...
+-- FROM scans
+-- ...

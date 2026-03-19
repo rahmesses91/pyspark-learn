@@ -193,6 +193,40 @@ Read a “config” string with lines like `key = value`. Parse into a dict; str
 
 ---
 
+## 6. Regular expressions (regex)
+
+---
+
+**Q6.1**  
+Given a string (e.g. a log line or URL), use the `re` module to check whether it contains a sequence of digits (one or more). Return `True` or `False`. Then write a variant that returns the first such digit sequence, or `None` if none.
+
+---
+
+**Q6.2**  
+A string may contain email-like patterns (e.g. `"Contact us at support@example.com or sales@company.org"`). Write a function using regex that returns a list of all substrings that look like email addresses (simplified: `word chars + @ + word chars + . + 2–4 letter domain`). Do not validate the full RFC; focus on the pattern.
+
+---
+
+**Q6.3**  
+Given a string with mixed content (e.g. `"Order #12345 shipped on 2024-01-15"`), use regex to extract: (1) the first number that follows `#` (order ID), and (2) the first date in `YYYY-MM-DD` form. Return a tuple `(order_id_str, date_str)` or `(None, None)` if not found.
+
+---
+
+**Q6.4**  
+Normalize a string by replacing every run of one or more non-alphanumeric characters (e.g. spaces, punctuation) with a single underscore. Use `re.sub`. Example: `"Hello,  world! How are you?"` → `"Hello_world_How_are_you"`.
+
+---
+
+**Q6.5**  
+Given a list of strings (e.g. log lines), use regex to filter to only lines that match a pattern (e.g. contain a timestamp like `2024-MM-DD` or a level like `ERROR`/`WARN`). Return the list of matching lines. Then write a variant that returns the list of *first* match groups (e.g. the timestamp or level) for each matching line.
+
+---
+
+**Q6.6**  
+Parse a string that contains one or more key-value pairs in the form `key="value"` or `key='value'` (values may contain spaces). Use regex with capturing groups to return a dictionary of all such pairs. Handle both quote styles; assume values do not contain the closing quote character.
+
+---
+
 ## Summary by topic
 
 | Topic              | Question IDs   |
@@ -202,5 +236,6 @@ Read a “config” string with lines like `key = value`. Parse into a dict; str
 | Text manipulation  | 3.1 – 3.6     |
 | Lists of text      | 4.1 – 4.10    |
 | Try/except & validation | 5.1 – 5.5 |
+| Regular expressions (regex) | 6.1 – 6.6 |
 
 Use any Python file or notebook to write your solutions. No solutions are provided in this bank.

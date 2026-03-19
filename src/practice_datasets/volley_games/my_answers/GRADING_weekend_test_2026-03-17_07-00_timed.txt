@@ -1,0 +1,28 @@
+================================================================================
+WEEKEND TIMED TEST (07:00) - GRADING
+Date: 2026-03-17   Reviewer: Interviewer
+================================================================================
+
+| Q# | Verdict            | What can be improved |
+|----|--------------------|----------------------|
+| 1  | CORRECT            | Logic is correct. Note: schema "weekend" vs "volley_games" is environment-specific—fine. |
+| 2  | CORRECT            | Logic and output correct. Good use of INNER JOIN to exclude countries with no purchases. |
+| 3  | PARTIALLY CORRECT  | Logic correct; FILTER is good. Missing: ORDER BY completion_rate_pct DESC. Column name "total_completed_sessions" vs "completed_sessions" is minor. |
+| 4  | INCORRECT          | (1) Cohort should be week of each user's FIRST session, not week of any session. (2) Join conditions wrong: day7/day30 use day1.started_at instead of day7/day30. (3) day30 range: "8 day" to "30 days" is wrong—should be 1–30 days. (4) Missing user_id in joins: need day1.user_id = uas.user_id (and same for day7, day30). (5) Output must be per cohort_week (one row per week); you aggregated to a single row. (6) Retention % should be * 100 (e.g. 25.00 not 0.25). |
+| 5  | NOT ATTEMPTED      | Conversion funnel: signup → first session → first completed → first purchase. Need MIN(first_session), MIN(first_completed), MIN(first_purchase) per user; then single-row summary with counts and stage-to-stage conversion %. |
+| 6  | NOT ATTEMPTED      | Describe deduplication: e.g. composite key + ROW_NUMBER/QUALIFY, MERGE with unique key, or idempotent upsert. |
+
+--------------------------------------------------------------------------------
+SUMMARY
+--------------------------------------------------------------------------------
+  Correct:            2 (Q1, Q2)
+  Partially correct:  1 (Q3)
+  Incorrect:          1 (Q4)
+  Not attempted:     2 (Q5, Q6)
+
+  Overall: Strong on basic aggregations. Q4 retention needs a clearer structure:
+  (1) user_first_session with cohort_week, (2) left join sessions for day1/day7/day30
+  with correct user_id + date range, (3) group by cohort_week. Q5 funnel and Q6
+  descriptive left for time—prioritize finishing all questions next time.
+
+================================================================================

@@ -1,0 +1,181 @@
+================================================================================
+DAILY RETENTION METRICS - DETAILED EXPLANATION
+================================================================================
+This document explains the query that computes retention percentages for each
+calendar day: "Of users who had their first session N days ago, what % came
+back today?"
+
+--------------------------------------------------------------------------------
+STEP 1: user_first_activity CTE
+--------------------------------------------------------------------------------
+  Purpose: Find each user's first-ever session date.
+
+  SQL:
+    SELECT user_id, MIN(started_at)::date AS first_activity_date
+    FROM weekend.sessions
+    GROUP BY user_id
+
+  What it does:
+    - Groups sessions by user_id
+    - MIN(started_at) gives the earliest session timestamp per user
+    - ::date casts to date (drops time) for clean day-level comparison
+
+  Output: One row per user with (user_id, first_activity_date)
+  Example: user 123, first_activity_date = 2024-01-14
+
+--------------------------------------------------------------------------------
+STEP 2: user_activity CTE
+--------------------------------------------------------------------------------
+  Purpose: For each session, attach the user's first_activity_date so we can
+  compute "days since first activity" for every activity.
+
+  SQL:
+    SELECT s.user_id, ufa.first_activity_date, s.started_at::date AS activity_date
+    FROM weekend.sessions s
+    JOIN user_first_activity ufa ON s.user_id = ufa.user_id
+
+  What it does:
+    - Joins sessions to user_first_activity on user_id
+    - Each session row now has: user_id, first_activity_date, activity_date
+    - activity_date - first_activity_date = days since signup (0 = first day, 1 = d1, etc.)
+
+  Output: One row per session with (user_id, first_activity_date, activity_date)
+  Example: user 123, first_activity_date = 2024-01-14, activity_date = 2024-01-15
+           -> this user is on their "day 1" return (came back the day after first session)
+
+--------------------------------------------------------------------------------
+STEP 3: Main SELECT - Group by activity_date
+--------------------------------------------------------------------------------
+  Purpose: For each calendar day, compute retention metrics.
+
+  We want to answer:
+    - d1_retention: Of users whose first session was YESTERDAY, what % were active TODAY?
+    - d7_retention: Of users whose first session was 1-7 days ago, what % were active TODAY?
+    - d30_retention: Of users whose first session was 1-30 days ago, what % were active TODAY?
+
+--------------------------------------------------------------------------------
+STEP 4: d1_retention_pct - Numerator and Denominator
+--------------------------------------------------------------------------------
+  Numerator (who returned on day 1?):
+    COUNT(DISTINCT CASE WHEN (activity_date - first_activity_date) = 1 THEN user_id END)
+
+    - (activity_date - first_activity_date) = 1 means: user's first session was yesterday
+    - They had a session today -> they "returned" on day 1
+    - CASE WHEN ... THEN user_id END: only count user_id when condition is true
+    - No ELSE: when false, returns NULL; COUNT ignores NULLs (correct!)
+    - DISTINCT: same user can have multiple sessions on that day; count once
+
+  Denominator (what % of whom?):
+    COUNT(DISTINCT CASE WHEN first_activity_date = activity_date - 1 THEN user_id END)
+
+    - first_activity_date = activity_date - 1: users whose first session was yesterday
+    - This is the cohort we care about: "yesterday's new users"
+    - We need how many of THEM came back today (numerator already has that)
+
+  Formula: (numerator / denominator) * 100
+  NULLIF(denominator, 0) prevents division by zero when no one had first session yesterday.
+
+--------------------------------------------------------------------------------
+STEP 5: d7_retention_pct - Numerator and Denominator
+--------------------------------------------------------------------------------
+  Numerator (who returned within 1-7 days?):
+    COUNT(DISTINCT CASE WHEN (activity_date - first_activity_date) BETWEEN 1 AND 7 THEN user_id END)
+
+    - (activity_date - first_activity_date) BETWEEN 1 AND 7: user's first session was 1-7 days ago
+    - They had a session today -> they returned within their first week
+
+  Denominator (cohort size):
+    COUNT(DISTINCT CASE WHEN first_activity_date BETWEEN activity_date - 7 AND activity_date - 1 THEN user_id END)
+
+    - first_activity_date BETWEEN activity_date - 7 AND activity_date - 1
+    - Users whose first session was 1 to 7 days ago (inclusive)
+    - For activity_date = 2024-01-15: first_activity_date in [2024-01-08, 2024-01-14]
+    - These users could have their "day 1" through "day 7" return on 2024-01-15
+
+--------------------------------------------------------------------------------
+STEP 6: d30_retention_pct - Numerator and Denominator
+--------------------------------------------------------------------------------
+  Numerator (who returned within 1-30 days?):
+    COUNT(DISTINCT CASE WHEN (activity_date - first_activity_date) BETWEEN 1 AND 30 THEN user_id END)
+
+  Denominator (cohort size):
+    COUNT(DISTINCT CASE WHEN first_activity_date BETWEEN activity_date - 30 AND activity_date - 1 THEN user_id END)
+
+    - first_activity_date in [activity_date - 30, activity_date - 1]
+    - Users whose first session was 1 to 30 days ago
+
+--------------------------------------------------------------------------------
+STEP 7: total_users_active
+--------------------------------------------------------------------------------
+  COUNT(DISTINCT user_id) AS total_users_active
+
+  - Total distinct users who had at least one session on that activity_date
+  - Useful for context (DAU) alongside retention metrics
+
+--------------------------------------------------------------------------------
+KEY DIFFERENCES FROM COHORT RETENTION
+--------------------------------------------------------------------------------
+  Cohort retention (by week):
+    - One row per cohort_week (e.g. "week of Jan 8")
+    - "Of users who signed up in week X, what % returned on d1, d7, d30?"
+    - Cohort is fixed; we track them over time
+
+  Daily retention (this query):
+    - One row per activity_date (calendar day)
+    - "For each day, what % of yesterday's / last week's / last month's new users came back?"
+    - Each day has different cohorts (yesterday's new users, last week's, etc.)
+    - Useful for daily dashboards: "how is retention trending day by day?"
+
+--------------------------------------------------------------------------------
+COMMON MISTAKES TO AVOID
+--------------------------------------------------------------------------------
+  1. COUNT(DISTINCT CASE WHEN ... THEN user_id ELSE 0 END)
+     - Wrong: ELSE 0 adds 0 to the count; COUNT(DISTINCT 0) can overcount
+     - Right: COUNT(DISTINCT CASE WHEN ... THEN user_id END) - no ELSE
+
+  2. Using total active users as denominator
+     - Wrong: "Of everyone active today, what % are d1 returners?" - different metric
+     - Right: Denominator = cohort size (users whose first_activity makes them eligible)
+
+  3. Wrong date ranges for d7/d30 denominator
+     - d7 denominator: first_activity_date between activity_date-7 and activity_date-1
+     - d30 denominator: first_activity_date between activity_date-30 and activity_date-1
+     - Not "8 to 30" for d30 - that would exclude d1-d7 returners
+
+--------------------------------------------------------------------------------
+FULL QUERY (PostgreSQL)
+--------------------------------------------------------------------------------
+
+WITH user_first_activity AS (
+    SELECT user_id, MIN(started_at)::date AS first_activity_date
+    FROM weekend.sessions
+    GROUP BY user_id
+),
+user_activity AS (
+    SELECT s.user_id, ufa.first_activity_date, s.started_at::date AS activity_date
+    FROM weekend.sessions s
+    JOIN user_first_activity ufa ON s.user_id = ufa.user_id
+)
+SELECT
+    activity_date,
+    COUNT(DISTINCT user_id) AS total_users_active,
+    ROUND(100.0 * COUNT(DISTINCT CASE 
+        WHEN (activity_date - first_activity_date) = 1 THEN user_id 
+    END) / NULLIF(COUNT(DISTINCT CASE 
+        WHEN first_activity_date = activity_date - 1 THEN user_id 
+    END), 0), 2) AS d1_retention_pct,
+    ROUND(100.0 * COUNT(DISTINCT CASE 
+        WHEN (activity_date - first_activity_date) BETWEEN 1 AND 7 THEN user_id 
+    END) / NULLIF(COUNT(DISTINCT CASE 
+        WHEN first_activity_date BETWEEN activity_date - 7 AND activity_date - 1 THEN user_id 
+    END), 0), 2) AS d7_retention_pct,
+    ROUND(100.0 * COUNT(DISTINCT CASE 
+        WHEN (activity_date - first_activity_date) BETWEEN 1 AND 30 THEN user_id 
+    END) / NULLIF(COUNT(DISTINCT CASE 
+        WHEN first_activity_date BETWEEN activity_date - 30 AND activity_date - 1 THEN user_id 
+    END), 0), 2) AS d30_retention_pct
+FROM user_activity
+GROUP BY activity_date
+ORDER BY activity_date;
+
+================================================================================

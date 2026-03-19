@@ -1,0 +1,74 @@
+================================================================================
+WEEKEND TECHNICAL TEST PLAN (PostgreSQL, 70 min / 60 min target)
+================================================================================
+Schema: volley_games (users, games, sessions, events, purchases)
+Reference: mysql/01_practice_problems.sql for difficulty mapping.
+
+--------------------------------------------------------------------------------
+1. TEST STRUCTURE (70 min total)
+--------------------------------------------------------------------------------
+  - 5 to 6 questions per timed test.
+  - Time budget: L0 ~5 min, L1 ~8 min, L2 ~12 min, L3 ~15 min, L4 ~20 min.
+  - Last 5–10 min buffer / optional short descriptive (e.g. dedup without PK).
+  - Warm-up (today 9 pm): same structure, not timed; can have 6–7 questions.
+
+--------------------------------------------------------------------------------
+2. QUESTION SELECTION FOR 70 MIN (from 01_practice_problems.sql)
+--------------------------------------------------------------------------------
+  Level 0: Q1–Q12 (pick 1)           → count, group by, one table.
+  Level 1: Problems 1–3 (pick 1–2)  → DAU, popular games, revenue by country.
+  Level 2: Problems 4–6 (pick 1–2)  → session duration, completion rate, premium conversion.
+  Level 3: Problems 7–10 (pick 1–2) → LAG/DAU growth, retention, running revenue, leaderboard.
+  Level 4: Problems 11–15 (pick 1)  → cohort matrix, funnel, churn, LTV, voice success rate.
+  Descriptive (no code): 1 short    → e.g. “How would you remove duplicates from an event table with no PK (e.g. in Snowflake)?”
+
+--------------------------------------------------------------------------------
+3. QUESTION STYLE (pragmatic, descriptive)
+--------------------------------------------------------------------------------
+  - No “Write a query.” Use business wording.
+  - Include: metric name, filters (e.g. completed only, non-null dates), grouping, output columns, edge cases (e.g. division by zero, nulls).
+  - Example: “As a product analyst you need daily active users. For each calendar day in the data, output the date and the count of distinct users who had at least one session that day. Order by date.”
+
+--------------------------------------------------------------------------------
+4. THREE TEST FILES (no question overlap between timed tests)
+--------------------------------------------------------------------------------
+  File 1: weekend_test_2026-03-16_21-00_warmup.sql   (today 9 pm – warm-up, not timed)
+  File 2: weekend_test_2026-03-17_07-00_timed.sql   (tomorrow 7 am – 70 min)
+  File 3: weekend_test_2026-03-17_21-00_timed.sql   (tomorrow 9 pm – 70 min)
+
+  Each file: header with date/time and “Warm-up” or “70 min timed”. Questions in order of increasing difficulty. PostgreSQL syntax (e.g. DATE_TRUNC, INTERVAL, ::date, EXTRACT).
+
+--------------------------------------------------------------------------------
+5. POSTGRESQL VS MYSQL (quick mapping)
+--------------------------------------------------------------------------------
+  - DATE(col)           → (col)::date or DATE_TRUNC('day', col)::date
+  - TIMESTAMPDIFF(MINUTE,a,b) → EXTRACT(EPOCH FROM (b-a))/60 or (b-a)/INTERVAL '1 minute'
+  - DATE_ADD(d, INTERVAL 7 DAY) → d + INTERVAL '7 days'
+  - WEEKDAY(d)          → EXTRACT(DOW FROM d) (Sun=0) or use DATE_TRUNC('week', d)
+  - ROUND(x,2)          → ROUND(x::numeric, 2)
+  - JSON_EXTRACT        → event_data->>'recognized' or event_data->'recognized'
+  - No USE db;          → \c or connect in client; schema prefix optional.
+
+--------------------------------------------------------------------------------
+6. VALIDATION
+--------------------------------------------------------------------------------
+  - You paste your .sql answers; I validate against expected logic (result shape, filters, aggregations).
+  - I do not run PostgreSQL; I check: correct tables/joins, grouping, window use, and edge-case handling (NULLIF, COALESCE).
+
+--------------------------------------------------------------------------------
+7. READABILITY IN CURSOR (no markdown)
+--------------------------------------------------------------------------------
+  - Plan stored as .txt (this file) so it reads in terminal/console without rendering.
+  - In Cursor: open WEEKEND_TEST_PLAN.txt; or in terminal: cat WEEKEND_TEST_PLAN.txt.
+  - For future plans: .txt or .plan with CAPS section headers and dashes for lists works well in console.
+
+================================================================================
+TEST FILES CREATED
+================================================================================
+  volley_games/weekend_tests/
+    weekend_test_2026-03-16_21-00_warmup.sql   (7 questions, not timed)
+    weekend_test_2026-03-17_07-00_timed.sql    (6 questions, 70 min)
+    weekend_test_2026-03-17_21-00_timed.sql    (6 questions, 70 min)
+  No question overlap between the two timed tests. Warm-up shares concepts
+  but different specific prompts. All use PostgreSQL; schema = volley_games.
+================================================================================

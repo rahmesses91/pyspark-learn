@@ -1,0 +1,34 @@
+Senior Data Engineer Interview Guide: Dandy
+Candidate: Rahul Raj Singh
+Duration: 60 Minutes
+Format: Live Coding (CodeSignal Style)
+ 
+Part 1: Python Problems (30 Minutes)
+Problem 1: Dental Lab Order Schema Normalizer
+Difficulty: Easy | Focus: Data Cleaning & String Manipulation
+•	Scenario: Dandy receives order metadata from various clinics in inconsistent formats (CamelCase, snake_case, or kebab-case).
+•	Task: Normalize all keys to snake_case and ensure all price values are floats. If a price is missing or invalid, default it to 0.0.
+•	Input: [{"OrderId": 101, "patient-name": "Alice", "Total_Price": "150.50"}]
+•	Output: [{"order_id": 101, "patient_name": "Alice", "total_price": 150.50}]
+•	Evaluation: Checking for defensive programming (handling None or non-numeric strings) and efficient string replacement.
+Problem 2: Impression-to-Delivery Bottleneck Detector
+Difficulty: Medium | Focus: State Management & Datetime Math
+•	Scenario: A dental "Case" moves through stages: Scanning → Design → Milling → Shipping.
+•	Task: Identify "Zombies"—cases that started Scanning but haven't had a status update in over 24 hours relative to a provided current_time.
+•	Input: A list of tuples (case_id, status, timestamp_iso) and a current_time string.
+•	Constraints: Events are not sorted. You must find the latest event for each case.
+•	Evaluation: Ability to use hash maps for state tracking and correct datetime object comparisons.
+ 
+Part 2: SQL Problems (30 Minutes)
+Problem 3: Monthly Retained Clinics
+Difficulty: Medium | Focus: Self-joins & Time-series Analysis
+•	Scenario: The growth team needs to track clinic loyalty.
+•	Task: Find the number of Retained Clinics for each month. A clinic is "Retained" in Month $N$ if they placed at least one order in Month $N$ AND at least one order in Month $N-1$.
+•	Schema: orders (order_id, clinic_id, order_date).
+•	Evaluation: Proper use of DATE_TRUNC, LAG() window functions, or self-joins to compare consecutive months.
+Problem 4: Sessionizing Impression Scans (Optional/Hard)
+Difficulty: Hard | Focus: Sessionization & Gap Analysis
+•	Scenario: Clinics often take multiple scans for one patient in one sitting.
+•	Task: Group scans into "Sessions." A new session starts if the gap between scans is >30 minutes. Calculate the total duration (first to last scan) per session.
+•	Evaluation: Ability to use the "beginning of group" logic (comparing current row to previous row) to create session IDs.
+

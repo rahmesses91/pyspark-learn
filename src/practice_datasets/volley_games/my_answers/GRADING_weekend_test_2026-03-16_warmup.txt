@@ -1,0 +1,25 @@
+================================================================================
+WEEKEND WARM-UP TEST - GRADING
+Date: 2026-03-16   Reviewer: Interviewer
+================================================================================
+
+| Q# | Verdict            | What can be improved |
+|----|--------------------|----------------------|
+| 1  | CORRECT            | COUNT(DISTINCT user_id) works but is redundant since user_id is PK. COUNT(*) or COUNT(user_id) is simpler and sufficient. |
+| 2  | INCORRECT          | DISTINCT ON (user_count) with ORDER BY user_count, random() does not return the month with the most signups. It returns one row per distinct user_count value, and with ascending order you may get a low-count month. Use: ORDER BY user_count DESC LIMIT 1 instead. |
+| 3  | CORRECT            | Logic and output are correct. Good follow-up question about sessions spanning midnight—shows you think about edge cases. |
+| 4  | CORRECT            | Correct logic. The filter ended_at > started_at is stricter than required (question only asked for non-null) but is reasonable to exclude invalid sessions. |
+| 5  | PARTIALLY CORRECT  | (1) Missing previous_dau in the final output—question asked for "the previous day's DAU." (2) One LAG has OVER() with no ORDER BY; use OVER(ORDER BY activity_date) for deterministic results. (3) Date spine + coalesce for missing days is a strong approach. |
+| 6  | INCORRECT          | (1) Syntax: missing comma between s.user_id and u.username (line 175). (2) Wrong "today": must use MAX(started_at) from sessions, not CURRENT_DATE. (3) last_active_date must come from MAX(s.started_at) per user in sessions, not users.last_active_at. (4) users table has last_active_at, not last_active. (5) CASE is missing END. (6) Remove LIMIT 20 for full result. |
+| 7  | PARTIALLY CORRECT  | Point 1 (partition pruning) is about performance, not deduplication—off-topic. Points 2 and 3 are valid: MD5/checksum + QUALIFY or ROW_NUMBER to keep one row, and composite key (user_id, session_id, started_at) for idempotent dedup. Be more concise and stay on topic. |
+
+--------------------------------------------------------------------------------
+SUMMARY
+--------------------------------------------------------------------------------
+  Correct:            2 (Q1, Q3, Q4)
+  Partially correct:  2 (Q5, Q7)
+  Incorrect:         3 (Q2, Q6)
+
+  Overall: Solid on aggregations and joins. Focus on: (1) simpler solutions when LIMIT 1 suffices, (2) deriving "today" and last_active from the data when specified, (3) syntax hygiene (commas, END, column names), (4) reading the question for required output columns.
+
+================================================================================
