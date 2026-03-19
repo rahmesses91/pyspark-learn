@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate pandas_cheatsheet_40_functions.pdf from the cheatsheet content."""
+"""Generate pandas_cheatsheet_40_functions.pdf — single letter page, dense 3-col layout."""
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
@@ -64,7 +64,7 @@ CONTENT = [
     ("Aggregation & Grouping", [
         ("df.groupby('cat')['sales'].sum()", "Single col group"),
         ("df.groupby(['cat','region'])['sales'].sum()", "Multi-col group"),
-        ("df.groupby(['cat','region']).agg({'a':'sum','b':'mean'})", "Multi-col + multi-agg"),
+        ("df.groupby(['cat','region']).agg({...})", "Multi-col + multi-agg"),
         ("df.groupby('cat').mean()", "Group mean"),
         ("df.groupby('id').agg({'a':'sum','b':'count'})", "Multi-agg"),
         ("df.groupby('cat').size()", "Group size"),
@@ -85,17 +85,19 @@ CONTENT = [
         ("pd.concat([df1, df2])", "Stack DataFrames"),
         ("pd.concat([df1, df2], axis=1)", "Concat columns"),
     ]),
-    ("Advanced Operations", [
+    ("Advanced — Window & Cumulative", [
         ("df['ma7'] = df['sales'].rolling(7).mean()", "Rolling mean"),
         ("df['lag'] = df['x'].shift(1)", "Lag column"),
         ("df['r'] = df.groupby('cat')['sales'].rank()", "Rank"),
-        ("df.groupby('cat').cumcount()", "Cumulative count per group"),
+        ("df.groupby('cat').cumcount()", "Cumcount per group"),
         ("df['x'].cumsum()", "Cumulative sum"),
         ("df.groupby('cat')['x'].cumsum()", "Cumsum per group"),
         ("df['x'].cummax()", "Cumulative max"),
         ("df['x'].cummin()", "Cumulative min"),
         ("df['x'].pct_change()", "Pct change"),
         ("df['x'].diff(1)", "Diff (lag diff)"),
+    ]),
+    ("Advanced — Reshape & Strings", [
         ("df.pivot_table(values='sales', index='cat', columns='region')", "Pivot"),
         ("df.melt(id_vars=['id'])", "Wide to long"),
         ("df.explode('col')", "Explode list col"),
@@ -107,35 +109,40 @@ CONTENT = [
     ]),
 ]
 
-# Column width for each half of the page (letter = 8.5", minus margins)
-COL_WIDTH = 3.65 * inch
-CODE_WIDTH = 2.2 * inch
-DESC_WIDTH = 1.4 * inch
+# Letter 8.5" - margins → ~7.5" usable; 3 columns
+PAGE_USABLE = 7.5 * inch
+GAP = 0.12 * inch
+COL_W = (PAGE_USABLE - 2 * GAP) / 3
+CODE_W = COL_W * 0.58
+DESC_W = COL_W * 0.42
 
 
-def make_section_table(title, items, code_style):
-    """Build a compact 2-column table for one section (Function | Description)."""
-    data = [[Paragraph(f'<b>{title}</b>', code_style), ""]]
+def make_section_table(title, items, para_style, section_width=None, code_pt=6, head_pt=7):
+    """Compact Function | Description table; section_width defaults to one of 3 columns."""
+    w = section_width if section_width is not None else COL_W
+    cw = w * 0.58
+    dw = w * 0.42
+    data = [[Paragraph(f'<b>{title}</b>', para_style), ""]]
     for code, desc in items:
         data.append([
-            Paragraph(f'<font name="Courier" size="9">{code}</font>', code_style),
+            Paragraph(f'<font name="Courier" size="{code_pt}">{code}</font>', para_style),
             desc,
         ])
-    t = Table(data, colWidths=[CODE_WIDTH, DESC_WIDTH])
+    t = Table(data, colWidths=[cw, dw])
     t.setStyle(TableStyle([
-        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 10),
-        ("FONT", (0, 1), (0, -1), "Courier", 9),
-        ("FONT", (1, 1), (1, -1), "Helvetica", 9),
+        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", head_pt + 1),
+        ("FONT", (0, 1), (0, -1), "Courier", code_pt),
+        ("FONT", (1, 1), (1, -1), "Helvetica", code_pt),
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E0E0E0")),
         ("SPAN", (0, 0), (-1, 0)),
         ("ALIGN", (0, 0), (-1, -1), "LEFT"),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 4),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 4),
-        ("TOPPADDING", (0, 0), (-1, -1), 2),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
-        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
-        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F8F8F8")]),
+        ("LEFTPADDING", (0, 0), (-1, -1), 2),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 2),
+        ("TOPPADDING", (0, 0), (-1, -1), 0),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ("GRID", (0, 0), (-1, -1), 0.25, colors.HexColor("#CCCCCC")),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F9F9F9")]),
     ]))
     return t
 
@@ -144,57 +151,85 @@ def main():
     doc = SimpleDocTemplate(
         "pandas_cheatsheet_40_functions.pdf",
         pagesize=letter,
-        leftMargin=0.4 * inch,
-        rightMargin=0.4 * inch,
-        topMargin=0.35 * inch,
-        bottomMargin=0.35 * inch,
+        leftMargin=0.28 * inch,
+        rightMargin=0.28 * inch,
+        topMargin=0.22 * inch,
+        bottomMargin=0.22 * inch,
     )
     styles = getSampleStyleSheet()
-    code_style = ParagraphStyle(
+    cell_style = ParagraphStyle(
         name="Cell",
         parent=styles["Normal"],
-        fontSize=9,
-        leading=10,
+        fontSize=6,
+        leading=7,
     )
 
     title_style = ParagraphStyle(
         name="Title",
         parent=styles["Normal"],
-        fontSize=14,
+        fontSize=11,
         fontName="Helvetica-Bold",
-        spaceAfter=6,
+        spaceAfter=3,
+        leading=12,
     )
 
-    story = [Paragraph("Pandas Cheatsheet — Essential Functions", title_style)]
+    col_widths_3 = [COL_W, GAP, COL_W, GAP, COL_W]
+    half_w = (PAGE_USABLE - GAP) / 2
 
-    # Pair sections side by side: (Data Loading, Selecting), (Cleaning, Type), (Aggregation, Joining), (Advanced,)
-    pairs = [
-        (CONTENT[0], CONTENT[1]),   # Data Loading | Selecting & Filtering
-        (CONTENT[2], CONTENT[3]),   # Cleaning | Type Handling
-        (CONTENT[4], CONTENT[5]),   # Aggregation | Joining
-        (CONTENT[6], None),         # Advanced (full width)
+    def row3(a, b, c):
+        """One physical row: col | gap | col | gap | col."""
+        inner = Table([[a, "", b, "", c]], colWidths=col_widths_3)
+        inner.setStyle(TableStyle([
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 0),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ]))
+        return inner
+
+    def row2_wide(left, right):
+        """Bottom row: two half-page section tables (Advanced split)."""
+        inner = Table([[left, "", right]], colWidths=[half_w, GAP, half_w])
+        inner.setStyle(TableStyle([
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 0),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ]))
+        return inner
+
+    story = [
+        Paragraph("Pandas Cheatsheet — Essential Functions (1 page)", title_style),
     ]
 
-    for left, right in pairs:
-        t_left = make_section_table(left[0], left[1], code_style)
-        if right:
-            t_right = make_section_table(right[0], right[1], code_style)
-            row = Table([[t_left, t_right]], colWidths=[COL_WIDTH, COL_WIDTH])
-            row.setStyle(TableStyle([
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (0, -1), 0),
-                ("RIGHTPADDING", (0, 0), (0, -1), 6),
-                ("LEFTPADDING", (1, 0), (1, -1), 6),
-                ("RIGHTPADDING", (1, 0), (1, -1), 0),
-            ]))
-            story.append(row)
-        else:
-            story.append(t_left)
-        story.append(Spacer(1, 4))
+    # Row 1: shorter sections — balances height across page
+    story.append(row3(
+        make_section_table(CONTENT[0][0], CONTENT[0][1], cell_style),
+        make_section_table(CONTENT[1][0], CONTENT[1][1], cell_style),
+        make_section_table(CONTENT[3][0], CONTENT[3][1], cell_style),
+    ))
+    story.append(Spacer(1, 2))
 
+    # Row 2: Cleaning | Aggregation | Joining
+    story.append(row3(
+        make_section_table(CONTENT[2][0], CONTENT[2][1], cell_style),
+        make_section_table(CONTENT[4][0], CONTENT[4][1], cell_style),
+        make_section_table(CONTENT[5][0], CONTENT[5][1], cell_style),
+    ))
+    story.append(Spacer(1, 2))
+
+    # Row 3: Advanced — two half-width tables (full page width)
+    story.append(row2_wide(
+        make_section_table(CONTENT[6][0], CONTENT[6][1], cell_style, section_width=half_w),
+        make_section_table(CONTENT[7][0], CONTENT[7][1], cell_style, section_width=half_w),
+    ))
+
+    story.append(Spacer(1, 1))
     story.append(Paragraph(
-        "1-page • 80+ functions • Assessments",
-        ParagraphStyle(name="F", parent=styles["Normal"], fontSize=8, textColor="gray")
+        "80+ ops • 3-column layout • 1 page",
+        ParagraphStyle(name="F", parent=styles["Normal"], fontSize=6, textColor="gray", leading=7)
     ))
 
     doc.build(story)
