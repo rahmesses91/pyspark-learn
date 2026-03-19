@@ -119,34 +119,43 @@ PAGE_USABLE = (_A4_W_IN - 2 * MARGIN_LR_IN) * inch
 GAP = 0.10 * inch
 COL_W = (PAGE_USABLE - 2 * GAP) / 3
 
-CODE_PT = 7
-HEAD_PT = 8
+CODE_PT = 8
+HEAD_PT = 9
+HEADER_ROW_PT = HEAD_PT + 2
+
+
+def a4_lead_in_spacer(estimated_story_height_pt, max_pad_pt=160):
+    usable_pt = A4[1] - 2 * (MARGIN_TB_IN * 72.0)
+    slack = usable_pt - estimated_story_height_pt
+    pad = max(0, min(slack / 2.0, max_pad_pt))
+    return Spacer(1, pad)
 
 
 def make_section_table(title, items, para_style, section_width=None, code_pt=CODE_PT, head_pt=HEAD_PT):
     """Compact Function | Description table; section_width defaults to one of 3 columns."""
     w = section_width if section_width is not None else COL_W
-    cw = w * 0.58
-    dw = w * 0.42
+    cw = w * 0.54
+    dw = w * 0.46
     data = [[Paragraph(f'<b>{title}</b>', para_style), ""]]
     for code, desc in items:
+        safe = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         data.append([
-            Paragraph(f'<font name="Courier" size="{code_pt}">{code}</font>', para_style),
+            Paragraph(f'<font name="Courier" size="{code_pt}">{safe}</font>', para_style),
             desc,
         ])
     t = Table(data, colWidths=[cw, dw])
     t.setStyle(TableStyle([
-        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", head_pt + 1),
+        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", HEADER_ROW_PT),
         ("FONT", (0, 1), (0, -1), "Courier", code_pt),
         ("FONT", (1, 1), (1, -1), "Helvetica", code_pt),
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E0E0E0")),
         ("SPAN", (0, 0), (-1, 0)),
         ("ALIGN", (0, 0), (-1, -1), "LEFT"),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 2),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 2),
-        ("TOPPADDING", (0, 0), (-1, -1), 1),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
+        ("LEFTPADDING", (0, 0), (-1, -1), 4),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+        ("TOPPADDING", (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
         ("GRID", (0, 0), (-1, -1), 0.25, colors.HexColor("#CCCCCC")),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F9F9F9")]),
     ]))
@@ -167,16 +176,16 @@ def main():
         name="Cell",
         parent=styles["Normal"],
         fontSize=CODE_PT,
-        leading=CODE_PT + 2,
+        leading=CODE_PT + 3,
     )
 
     title_style = ParagraphStyle(
         name="Title",
         parent=styles["Normal"],
-        fontSize=13,
+        fontSize=15,
         fontName="Helvetica-Bold",
-        spaceAfter=4,
-        leading=15,
+        spaceAfter=10,
+        leading=18,
     )
 
     col_widths_3 = [COL_W, GAP, COL_W, GAP, COL_W]
@@ -207,6 +216,7 @@ def main():
         return inner
 
     story = [
+        a4_lead_in_spacer(720, max_pad_pt=130),
         Paragraph("Pandas Cheatsheet — Essential Functions (A4)", title_style),
     ]
 
@@ -216,7 +226,7 @@ def main():
         make_section_table(CONTENT[1][0], CONTENT[1][1], cell_style),
         make_section_table(CONTENT[3][0], CONTENT[3][1], cell_style),
     ))
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 14))
 
     # Row 2: Cleaning | Aggregation | Joining
     story.append(row3(
@@ -224,7 +234,7 @@ def main():
         make_section_table(CONTENT[4][0], CONTENT[4][1], cell_style),
         make_section_table(CONTENT[5][0], CONTENT[5][1], cell_style),
     ))
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 14))
 
     # Row 3: Advanced — two half-width tables (full page width)
     story.append(row2_wide(
@@ -232,10 +242,10 @@ def main():
         make_section_table(CONTENT[7][0], CONTENT[7][1], cell_style, section_width=half_w),
     ))
 
-    story.append(Spacer(1, 1))
+    story.append(Spacer(1, 12))
     story.append(Paragraph(
         "80+ ops • 3-column layout • A4",
-        ParagraphStyle(name="F", parent=styles["Normal"], fontSize=7, textColor="gray", leading=8)
+        ParagraphStyle(name="F", parent=styles["Normal"], fontSize=8, textColor="gray", leading=9)
     ))
 
     doc.build(story)

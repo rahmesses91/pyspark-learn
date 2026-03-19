@@ -119,15 +119,24 @@ PAGE_USABLE = (_A4_W_IN - 2 * MARGIN_LR_IN) * inch
 GAP = 0.10 * inch
 COL_W = (PAGE_USABLE - 2 * GAP) / 3
 
-# Larger type for A4 (readable when printed)
-CODE_PT = 7
-HEAD_PT = 8
+# Typography tuned for A4 — larger body + padding so the page fills vertically
+CODE_PT = 8
+HEAD_PT = 9
+HEADER_ROW_PT = HEAD_PT + 2  # section title row
+
+
+def a4_lead_in_spacer(estimated_story_height_pt, max_pad_pt=200):
+    """Push block down so whitespace is split top/bottom (ReportLab flows from top only)."""
+    usable_pt = A4[1] - 2 * (MARGIN_TB_IN * 72.0)
+    slack = usable_pt - estimated_story_height_pt
+    pad = max(0, min(slack / 2.0, max_pad_pt))
+    return Spacer(1, pad)
 
 
 def make_section_table(title, items, para_style, section_width=None, code_pt=CODE_PT, head_pt=HEAD_PT):
     w = section_width if section_width is not None else COL_W
-    cw = w * 0.58
-    dw = w * 0.42
+    cw = w * 0.54
+    dw = w * 0.46
     data = [[Paragraph(f"<b>{title}</b>", para_style), ""]]
     for code, desc in items:
         safe = (
@@ -141,17 +150,17 @@ def make_section_table(title, items, para_style, section_width=None, code_pt=COD
         ])
     t = Table(data, colWidths=[cw, dw])
     t.setStyle(TableStyle([
-        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", head_pt + 1),
+        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", HEADER_ROW_PT),
         ("FONT", (0, 1), (0, -1), "Courier", code_pt),
         ("FONT", (1, 1), (1, -1), "Helvetica", code_pt),
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E0E0E0")),
         ("SPAN", (0, 0), (-1, 0)),
         ("ALIGN", (0, 0), (-1, -1), "LEFT"),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 2),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 2),
-        ("TOPPADDING", (0, 0), (-1, -1), 1),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
+        ("LEFTPADDING", (0, 0), (-1, -1), 4),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+        ("TOPPADDING", (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
         ("GRID", (0, 0), (-1, -1), 0.25, colors.HexColor("#CCCCCC")),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F9F9F9")]),
     ]))
@@ -173,15 +182,15 @@ def main():
         name="CellDS",
         parent=styles["Normal"],
         fontSize=CODE_PT,
-        leading=CODE_PT + 2,
+        leading=CODE_PT + 3,
     )
     title_style = ParagraphStyle(
         name="TitleDS",
         parent=styles["Normal"],
-        fontSize=13,
+        fontSize=15,
         fontName="Helvetica-Bold",
-        spaceAfter=4,
-        leading=15,
+        spaceAfter=10,
+        leading=18,
     )
     col_widths_3 = [COL_W, GAP, COL_W, GAP, COL_W]
 
@@ -196,28 +205,30 @@ def main():
         ]))
         return inner
 
+    # Tuned estimate: if too low, PDF gains a 2nd page — if too high, extra bottom whitespace
     story = [
+        a4_lead_in_spacer(575, max_pad_pt=190),
         Paragraph(
             "Python: str, list, set, dict, tuple + regex (re) — A4",
             title_style,
         ),
-        # Row 1: balance heights (~14 / 11 / 14); tuples shortest in middle
+        # Row 1: balance heights; tuples shortest in middle
         row3(
             make_section_table(CONTENT[0][0], CONTENT[0][1], cell_style),
             make_section_table(CONTENT[4][0], CONTENT[4][1], cell_style),
             make_section_table(CONTENT[2][0], CONTENT[2][1], cell_style),
         ),
-        Spacer(1, 3),
+        Spacer(1, 16),
         # Row 2: lists + dict + regex
         row3(
             make_section_table(CONTENT[1][0], CONTENT[1][1], cell_style),
             make_section_table(CONTENT[3][0], CONTENT[3][1], cell_style),
             make_section_table(CONTENT[5][0], CONTENT[5][1], cell_style),
         ),
-        Spacer(1, 2),
+        Spacer(1, 14),
         Paragraph(
             "~80 ops • str, tuple, set | list, dict, regex • A4 • DE-focused",
-            ParagraphStyle(name="FDS", parent=styles["Normal"], fontSize=7, textColor="gray", leading=8),
+            ParagraphStyle(name="FDS", parent=styles["Normal"], fontSize=8, textColor="gray", leading=9),
         ),
     ]
     doc.build(story)
