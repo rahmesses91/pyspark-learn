@@ -1,0 +1,120 @@
+Hi Rahul,
+
+Congratulations on making it to the final round of interviews at Chewy! The team is excited to meet with you. Below are some helpful tips to guide your preparation:
+
+Interview Format
+
+Expect a mix of behavioral and technical questions. Behavioral questions are based on Chewy’s Operating Principles, which guide how we make decisions and approach challenges. You’ll often hear prompts like:
+
+“Tell me about a time when…”
+“Describe a situation where…”
+“Explain how you handled…”
+Interviewers are looking for detailed examples of how you’ve approached past situations, with a focus on your individual contributions.
+
+Preparation Tips
+
+Review Chewy’s Operating Principles: You don’t need to memorize them, but prepare 2–3 examples for each. This helps avoid repeating stories across interviewers.
+Use the STAR Method: Structure your answers using Situation, Task, Action, Result. Here’s a helpful video on STAR.
+Be Concise: Aim for 2–3 minutes per response.
+Focus on Your Role: Use “I” statements and highlight your direct contributions.
+Ask Clarifying Questions: If anything is unclear, it’s perfectly fine to ask.
+Have Questions Ready: Thoughtful questions show your engagement and interest.
+Prepare for “Why Chewy?” or “Why This Role?”: Go beyond being a pet lover—show your alignment with our mission and the role’s impact.
+Research Interviewers: Check out their LinkedIn profiles if available. I’m happy to help if you need assistance.
+“Operate at Depth”: Be ready to discuss how you’ve used data to drive decisions in past roles.
+If you have any questions ahead of the interview, don’t hesitate to reach out. Best of luck—you’ve got this!
+
+ 
+
+Interviewer 1:  Siva Prasad
+Role: Manager, Data Engineering
+
+Focus Areas:
+
+System Architecture & Platform Design
+Observability & Data Quality Standards
+Snowflake performance & cost optimization
+Real-time vs batch trade-offs
+Hands-on depth in Python/SQL/dbt
+What to Probe:
+
+Can they whiteboard a scalable cross-domain Snowflake architecture?
+How do they detect and prevent regressions?
+How do they define SLAs & freshness?
+What are their modeling principles in dbt?
+Leadership Principles:
+
+#OperateAtDepth
+#AccelerateTime
+
+ 
+
+Interviewer 2: Kishore Kolli
+
+Role: TPM / Stakeholder
+
+Focus Areas:
+
+Translating architecture into roadmap initiatives
+Modernization & automation mindset
+Practical adoption of emerging technologies
+AI-forward thinking in data engineering
+What to Probe:
+
+How do they evaluate new tech?
+How do they balance velocity vs quality?
+How do they define measurable reliability improvements?
+Can they influence roadmap without formal authority?
+Leadership Principles:
+
+#CustomerFirst
+#DebateOpenlyCommitFully
+
+ 
+
+ 
+
+Interviewer 3: Rana Mahanta
+
+Role: DEIII / Team Member
+
+Focus Areas:
+
+Cross-domain system impact
+Business alignment of architecture
+Communication clarity at system level
+AI & analytics enablement
+What to Probe:
+
+Can they explain architecture in business terms?
+Do they understand ML/AI downstream needs?
+How do they prioritize modernization work?
+Can they align multiple domains around standards?
+Leadership Principles:
+
+#OperateAtDepth
+#AccelerateTime
+#ActAsOwner
+
+ 
+
+ 
+
+Interviewer 4: Rahul Singh
+
+Role: Associate Director, Data Engineering
+
+Focus Areas:
+
+System-level architecture maturity
+Terraform & infra governance depth
+Long-term platform evolution
+Mentorship & raising engineering standards
+Organizational influence
+What to Probe:
+
+Have they defined standards adopted by multiple teams?
+Can they design reusable Terraform modules?
+How do they scale platform patterns?
+How do they mentor senior engineers?
+How will they shape EDS in 2–3 years?

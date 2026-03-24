@@ -1,0 +1,112 @@
+CodeSignal ICA — Banking System (practice prompt)
+==================================================
+
+Your task is to implement a simplified banking system. Design your solution so you can extend it level by level.
+
+Level specifications
+--------------------
+• Level 1: Create accounts; deposit; withdraw/pay.
+• Level 2: Rank accounts by total transaction value (activity).
+• Level 3: Schedule transfers between accounts; accept transfers before they expire.
+• Level 4: Merge two accounts while preserving balances and transaction history.
+
+To unlock the next level, all tests for the current level must pass.
+
+Global rules
+------------
+You receive a list of queries. The final output is an array of strings — the return value of each query, in order.
+
+• Each query invokes exactly one operation.
+• Every query includes a `timestamp` (string or int in milliseconds). All timestamps are unique and lie in [1, 10^9].
+• Queries are sorted by strictly increasing timestamp.
+
+Level 1
+-------
+
+1. CREATE_ACCOUNT <timestamp> <accountId>
+   • If `accountId` does not exist, create it with balance 0 and return `"true"`.
+   • If it already exists, return `"false"`.
+
+2. DEPOSIT <timestamp> <accountId> <amount>
+   • Add `amount` to the account’s balance (`amount` is a positive integer).
+   • Return a string of the new balance (total money in the account).
+   • If the account does not exist, return `""` (empty string).
+
+3. PAY <timestamp> <accountId> <amount>
+   • Withdraw `amount` from the account (`amount` is a positive integer).
+   • Return a string of the balance after the withdrawal.
+   • If the account does not exist, or balance is insufficient, return `""`.
+
+Level 2
+-------
+
+The system must rank accounts by **total value of transactions** (not merely the count of operations).
+
+1. TOP_ACTIVITY <timestamp> <n>
+   • Return the top `n` accounts with the highest **total value of transactions**, in **descending** order of that total.
+   • Output format (exactly):  
+     `"<accountId1>(<total1>), <accountId2>(<total2>), ..."`  
+     — comma and single space between entries; totals are decimal string representations of integers (no extra spaces).
+   • **Total value of transactions** = sum of **amounts** from:
+     – each successful DEPOSIT and PAY on that account;
+     – each **accepted** TRANSFER: add `amount` once for the source and once for the target at accept time;
+     – pending or expired transfers do **not** add to activity until/unless accepted (expired adds nothing).
+   • Failed operations (calls that return `""`) do not increase activity.
+   • If fewer than `n` accounts exist, list all accounts, same format.  
+   • **Tie-break:** if two accounts have the same total, sort by `accountId` **lexicographically ascending** before taking the top `n`.
+
+Level 3
+-------
+
+Scheduled transfers between accounts.
+
+1. TRANSFER <timestamp> <sourceAccountId> <targetAccountId> <amount>
+   • Withdraw `amount` from `sourceAccountId` and **hold** it until the target accepts, or until the transfer **expires**.
+   • Expiration: **24 hours** = `86400000` ms. A pending transfer **expires** at timestamp `T` if `T > transferStartTimestamp + 86400000` (strictly after the window; at `start + 86400000` it is still valid).
+
+   Returns:
+   • `""` if `sourceAccountId == targetAccountId`.
+   • `""` if either account does not exist.
+   • `""` if available balance on the source is insufficient (available = balance minus sums held for other pending transfers from that account).
+
+   On success:
+   • Return a unique transfer id: `"transfer1"`, `"transfer2"`, … in global creation order.
+
+   Accounting:
+   • On TRANSFER: subtract `amount` from source **balance** immediately (funds held “in transit”; balance reflects money not available to spend).
+   • On ACCEPT_TRANSFER: add `amount` to target balance; the transfer is complete.
+   • On expiry (any query at a timestamp after expiration, if still pending): add `amount` back to the source balance and discard the pending transfer.
+   • **Activity:** amounts count toward TOP_ACTIVITY only when a transfer is **accepted** (see Level 2).
+
+2. ACCEPT_TRANSFER <timestamp> <accountId> <transferId>
+   • The **target** account accepts a pending, non-expired transfer.
+
+   Returns:
+   • `"true"` if accepted successfully; `"false"` otherwise.
+
+   `"false"` when:
+   • `transferId` is unknown, already accepted, or expired at `timestamp`.
+   • `accountId` is not the **target** of that transfer.
+
+Level 4
+-------
+
+1. MERGE_ACCOUNTS <timestamp> <keepAccountId> <mergeAccountId>
+   • Merge `mergeAccountId` **into** `keepAccountId`.
+   • After a successful merge, only `keepAccountId` remains; `mergeAccountId` is removed.
+
+   Returns:
+   • `"false"` if either account does not exist, or `keepAccountId == mergeAccountId`.
+   • `"false"` if **any** pending TRANSFER references `mergeAccountId` as source or target (resolve or expire those first).
+   • Otherwise `"true"`.
+
+   On success:
+   • **Balance:** new balance of `keepAccountId` = old(`keepAccountId`) + old(`mergeAccountId`) (each balance already reflects held funds per Level 3).
+   • **Activity total** for `keepAccountId` = sum of the two accounts’ activity totals before the merge (so merged account ranks by combined lifetime activity).
+   • **History:** if you maintain per-account transaction logs for debugging or future features, concatenate both histories in **timestamp order** (global order matches query order).
+   • **Transfers:** any pending transfer that only involved `keepAccountId` is unchanged. Reject merge if `mergeAccountId` appears in any pending transfer.
+
+Implementation notes (for you, not auto-graded)
+-------------------------------------------------
+• Prefer a small service class or module with one method per operation and clear state: `accounts`, `transfers`, counters.
+• Refactor after each level so Level 4 reuses Level 1–3 helpers instead of duplicating logic.

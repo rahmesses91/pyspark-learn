@@ -1,0 +1,193 @@
+Banking system — ICA-style practice
+===================================
+
+Mock Industry Coding Assessment task: implement a banking API from a fixed contract and pass Level 1 tests before adding later levels.
+
+This pack is not affiliated with Cedar or CodeSignal. See the parent ../README.md for general ICA notes.
+
+--------------------------------------------------------------------------------
+
+What to read first
+------------------
+
+1. question.txt — Full specification: Level 1 (CREATE_ACCOUNT, DEPOSIT, PAY); Level 2 (TOP_ACTIVITY); Levels 3–4 in the prompt for later.
+2. This file — How the repo is laid out and how to run tests.
+
+--------------------------------------------------------------------------------
+
+Layout (simulated CodeSignal filesystem)
+----------------------------------------
+
+Locked / read-only (treat as fixed on the platform)
+  banking_system.py — abstract API (BankingSystem with execute).
+  banking_activity.py — Level 2 contract (BankingActivity: parse + format for TOP_ACTIVITY).
+  tests/level_1_tests.py — graded Level 1 tests.
+  tests/level_2_tests.py — graded Level 2 (TOP_ACTIVITY).
+
+You edit
+  banking_system_impl.py — BankingSystemImpl, run_queries, and Level 2 (_handle_top_activity).
+  banking_activity_impl.py — BankingActivityImpl (same pattern as payments/payment_balance_calculator_impl.py).
+  This checkout includes a working Level 1 implementation. Level 2 stubs raise until you implement; then tests/level_2_tests.py should pass.
+
+Sandbox (not scored)
+  tests/sandbox_tests.py — safe to change for experiments.
+
+Helpers
+  timeout_decorator.py — no-op local stand-in for CodeSignal’s timeout decorator.
+
+Levels 3–4 (TRANSFER, MERGE_ACCOUNTS, …) are described in question.txt but not bundled as graded tests yet; see ../ica_practice_test_simulation/ICA_SIMULATION.md for simulation notes.
+
+--------------------------------------------------------------------------------
+
+How to run tests
+----------------
+
+From this directory (same folder as tests/):
+
+  python3 -m unittest discover -s tests -p '*.py' -v
+
+While Level 2 is still a work in progress, run Level 1 only:
+
+  python3 -m unittest tests.level_1_tests -v
+
+Or:
+
+  bash main.sh
+  bash run_single_test.sh "test_create_account"
+
+Requires Python 3.9+ (stdlib + unittest). Use a virtualenv if you prefer.
+
+--------------------------------------------------------------------------------
+
+API contract (Level 1)
+------------------------
+
+- Queries are lists of string tokens, e.g. ["CREATE_ACCOUNT", "<timestamp>", "<accountId>"], ["DEPOSIT", ...], ["PAY", ...].
+- BankingSystemImpl.execute(query) -> str returns "true", "false", balance strings, or "" per question.txt.
+- Unknown operations: ValueError (tests may check the message).
+
+Implement state (accounts, balances) in the impl class; keep banking_system.py unchanged unless you are maintaining the simulation harness.
+
+API contract (Level 2)
+------------------------
+
+- TOP_ACTIVITY <timestamp> <n> — rank existing accounts by total successful DEPOSIT + PAY amounts (see question.txt). Output format: "id1(total1), id2(total2), ..." with comma + space; ties broken by accountId ascending before taking the top n. n = 0 or no accounts yields "".
+
+--------------------------------------------------------------------------------
+
+Example input and output (Level 1)
+----------------------------------
+
+Each query is a list of string tokens. Timestamps must be strictly increasing across the session (see question.txt).
+
+Single calls — execute(query) -> one string
+  bank.execute(["CREATE_ACCOUNT", "1", "alice"])     ->  "true"
+  bank.execute(["CREATE_ACCOUNT", "10", "alice"])    ->  "false"   (duplicate id)
+
+  bank.execute(["DEPOSIT", "1", "ghost", "50"])      ->  ""        (account missing)
+
+  CREATE_ACCOUNT then DEPOSIT then PAY:
+  bank.execute(["CREATE_ACCOUNT", "1", "a1"])
+  bank.execute(["DEPOSIT", "2", "a1", "100"])        ->  "100"
+  bank.execute(["PAY", "3", "a1", "30"])             ->  "70"
+
+  PAY with exact balance (balance becomes zero):
+  bank.execute(["CREATE_ACCOUNT", "1", "a1"])
+  bank.execute(["DEPOSIT", "2", "a1", "50"])
+  bank.execute(["PAY", "3", "a1", "50"])             ->  "0"
+
+  PAY fails (insufficient funds) — returns "" and balance unchanged:
+  bank.execute(["CREATE_ACCOUNT", "1", "a1"])
+  bank.execute(["DEPOSIT", "2", "a1", "10"])
+  bank.execute(["PAY", "3", "a1", "11"])             ->  ""
+
+Full sequence — each line is one execute and its return value:
+  ["CREATE_ACCOUNT", "100", "x"]   ->  "true"
+  ["CREATE_ACCOUNT", "200", "y"]   ->  "true"
+  ["DEPOSIT", "300", "x", "500"]   ->  "500"
+  ["PAY", "400", "x", "100"]       ->  "400"
+  ["DEPOSIT", "500", "y", "1"]     ->  "1"
+
+  Ordered results for the whole run:
+  ["true", "true", "500", "400", "1"]
+
+Batch helper — run_queries(queries) -> list[str]
+  Same behavior as a fresh BankingSystemImpl executing each query in order:
+
+  queries = [
+      ["CREATE_ACCOUNT", "1", "u"],
+      ["DEPOSIT", "2", "u", "7"],
+      ["PAY", "3", "u", "2"],
+  ]
+  run_queries(queries)  ->  ["true", "7", "5"]
+
+Unknown operation (example): execute(["UNKNOWN", "1"])  ->  raises ValueError
+
+--------------------------------------------------------------------------------
+
+Example input and output (Level 2) — TOP_ACTIVITY
+-------------------------------------------------
+
+Activity = sum of amounts from successful DEPOSIT and successful PAY on that account (failed "" returns do not add). 
+Format: "id1(total1), id2(total2), ..." (comma + single space). 
+Sort by highest total first; ties break by accountId ascending before taking the top n.
+
+Two accounts, different totals — top 2:
+  ["CREATE_ACCOUNT", "1", "bob"]
+  ["CREATE_ACCOUNT", "2", "alice"]
+  ["DEPOSIT", "3", "alice", "100"]
+  ["DEPOSIT", "4", "bob", "50"]
+  ["TOP_ACTIVITY", "5", "2"]  ->  "alice(100), bob(50)"
+
+Same activity total — tie-break lexicographic (apple before zebra):
+  ["CREATE_ACCOUNT", "1", "zebra"]
+  ["CREATE_ACCOUNT", "2", "apple"]
+  ["DEPOSIT", "3", "zebra", "10"]
+  ["DEPOSIT", "4", "apple", "10"]
+  ["TOP_ACTIVITY", "5", "2"]  ->  "apple(10), zebra(10)"
+
+DEPOSIT and PAY both count toward activity (e.g. 100 + 40 = 140):
+  ["CREATE_ACCOUNT", "1", "a1"]
+  ["DEPOSIT", "2", "a1", "100"]
+  ["PAY", "3", "a1", "40"]
+  ["TOP_ACTIVITY", "4", "1"]  ->  "a1(140)"
+
+Failed PAY does not add activity (only the successful deposit counts):
+  ["CREATE_ACCOUNT", "1", "a1"]
+  ["DEPOSIT", "2", "a1", "5"]
+  ["PAY", "3", "a1", "10"]   ->  ""     (insufficient)
+  ["TOP_ACTIVITY", "4", "1"]  ->  "a1(5)"
+
+Fewer accounts than n — list all that exist:
+  ["CREATE_ACCOUNT", "1", "only"]
+  ["DEPOSIT", "2", "only", "7"]
+  ["TOP_ACTIVITY", "3", "5"]  ->  "only(7)"
+
+TOP_ACTIVITY in the middle of other ops (timestamps still increase globally):
+  ["CREATE_ACCOUNT", "1", "x"]
+  ["DEPOSIT", "2", "x", "500"]
+  ["TOP_ACTIVITY", "3", "1"]       ->  "x(500)"
+  ["PAY", "4", "x", "100"]         ->  "400"
+  ["DEPOSIT", "5", "x", "1"]       ->  "401"
+
+n = 0 or no accounts — empty string:
+  ["CREATE_ACCOUNT", "1", "a"]
+  ["TOP_ACTIVITY", "2", "0"]  ->  ""
+
+run_queries including TOP_ACTIVITY:
+  queries = [
+      ["CREATE_ACCOUNT", "1", "u"],
+      ["DEPOSIT", "2", "u", "10"],
+      ["TOP_ACTIVITY", "3", "1"],
+  ]
+  run_queries(queries)  ->  ["true", "10", "u(10)"]
+
+--------------------------------------------------------------------------------
+
+References
+----------
+
+- CodeSignal ICA rules:
+  https://support.codesignal.com/hc/en-us/articles/19116922232983-What-are-the-Industry-Coding-Assessment-ICA-rules
+
+- Agent simulation notes: ../ica_practice_test_simulation/ICA_SIMULATION.md
