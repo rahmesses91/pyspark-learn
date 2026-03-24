@@ -1,0 +1,47 @@
+| **Domain** | **Sub‑Domains** | **What It Covers** | **Key Entities** | **Core Metrics** | **Why It Matters** |
+| --- | --- | --- | --- | --- | --- |
+| **Customer & Pet** | Customer Identity & Profile | Customer master data, households | Customer, Household | Active customers | Foundation for identity resolution |
+|  | Customer Lifecycle & Behavior | Activity windows, lifecycle states | Lifecycle state, activity logs | Retention, churn | Drives lifecycle modeling |
+|  | Customer Preferences & Personalization | Brand/category affinity, comms prefs | Preferences, affinities | Personalization lift | Powers recommendations |
+|  | Pet Identity & Profile | Species, breed, age, dietary needs | Pet, breed, species | Pet completeness | Pet‑driven personalization |
+|  | Pet Health & Medical | Conditions, prescriptions, vet info | Conditions, prescriptions | Rx eligibility | Critical for pharmacy |
+|  | Customer Support & Experience | Support interactions, CSAT | Tickets, chats, CSAT | CSAT, NPS | CX differentiator |
+|  | Customer Financial & Value | LTV, margin, refund behavior | LTV, margin, refunds | Contribution margin | Profitability analysis |
+|  | Customer Acquisition & Attribution | Channels, CAC, onboarding | Channels, campaigns | CAC, ROAS | Optimizes acquisition spend |
+| **Orders & Transactions** | Order Capture | Order creation, cart → order flow | Orders, carts | Order conversion | Core revenue pipeline |
+|  | Order Line Items | SKU‑level detail | Order items | AOV, item mix | Granular product insights |
+|  | Payments & Settlements | Payments, refunds, adjustments | Payments, refunds | Net sales, refund rate | Finance reporting |
+|  | Order Status & Lifecycle | Order states (placed → delivered) | Order events | Fulfillment cycle time | Operational visibility |
+| **Autoship / Subscription** | Subscription Identity | Subscription master, customer linkage | Subscription | Subscription count | Recurring revenue base |
+|  | Subscription Schedule | Delivery cadence, next ship date | Schedules | On‑time autoship | Inventory planning |
+|  | Subscription Modifications | Pauses, edits, skips | Modifications | Modification rate | Customer behavior insights |
+|  | Subscription Churn | Cancellations, reasons | Cancellations | Autoship churn | Key retention metric |
+| **Pet Health & Pharmacy** | Vet Authorization | Vet approvals, compliance | Vet authorizations | Approval SLA | Regulatory compliance |
+|  | Prescription Management | Rx lifecycle | Prescriptions | Rx approval rate | Pharmacy throughput |
+|  | Pharmacy Orders | Fulfillment of Rx orders | Pharmacy orders | Pharmacy GMV | Revenue driver |
+|  | Vet Network | Vet clinics, providers | Clinics, providers | Approval turnaround | Network optimization |
+| **Fulfillment & Logistics** | Inventory Management | Stock levels, replenishment | Inventory, SKUs | In‑stock rate | Prevents lost sales |
+|  | Fulfillment Center Ops | FC throughput, picking, packing | FCs, pick/pack events | FC productivity | Cost optimization |
+|  | Shipping & Delivery | Carrier events, tracking | Shipments, carriers | On‑time delivery | Customer satisfaction |
+|  | Reverse Logistics | Returns, damages | Returns, RMA | Return rate | Cost control |
+| **Product & Merchandising** | Product Catalog | SKU master, attributes | Products, attributes | SKU completeness | Foundation for search & recs |
+|  | Category & Taxonomy | Category hierarchy | Categories | Category performance | Merchandising strategy |
+|  | Pricing | Base price, discounts | Pricing, price events | Price elasticity | Revenue optimization |
+|  | Promotions | Promo campaigns, coupons | Promotions | Promo lift | Marketing effectiveness |
+|  | Brand Management | Brand hierarchy | Brands | Brand share | Vendor negotiations |
+| **Marketing & Advertising** | Campaign Management | Campaign metadata | Campaigns | Spend, impressions | Marketing governance |
+|  | Channel Performance | Paid search, social, email | Channels | CAC, ROAS | Channel optimization |
+|  | Ad Delivery | Impressions, clicks | Impressions, clicks | CTR, CPC | Media efficiency |
+|  | Conversion & Attribution | Multi‑touch attribution | Attribution events | Conversion rate | Accurate ROI |
+| **Customer Experience & Support** | Support Tickets | Ticket lifecycle | Tickets | Resolution time | CX operations |
+|  | Chat & Messaging | Chat transcripts | Chats | Chat CSAT | Digital support |
+|  | Phone Support | Call metadata | Calls | AHT, FCR | Call center ops |
+|  | Surveys & Feedback | CSAT, NPS | Surveys | NPS, CSAT | Customer sentiment |
+| **Experimentation & Personalization** | Experiment Setup | Experiment metadata | Experiments | Exposure | Governance |
+|  | Variant Assignment | User → variant mapping | Assignments | Sample balance | Experiment integrity |
+|  | Experiment Metrics | Lift, significance | Metrics | Lift, p‑value | Decision‑making |
+|  | Personalization Models | Model features & outputs | Features, scores | Model CTR | ML‑driven personalization |
+| **Operational & Finance** | Financial Calendars | Fiscal periods | Calendars | Period alignment | Consistent reporting |
+|  | Cost Centers | Org structure | Cost centers | Opex | Budgeting |
+|  | Vendor & Contract Management | Supplier contracts | Vendors | Vendor spend | Procurement |
+|  | P&L & Margin | Revenue, COGS, margin | P&L structures | Contribution margin | Executive reporting |

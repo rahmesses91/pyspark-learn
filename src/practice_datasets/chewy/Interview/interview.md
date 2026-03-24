@@ -12,11 +12,29 @@ Use these answers as **anchors**: adapt wording live; keep **2–3 minutes** for
 
 **Response (lead framing):**
 
-- **Start from consumers**: who needs the data (finance close, product analytics, ops), latency tolerance, and blast radius if a domain breaks.
+- **Start from consumers**: who needs the data (finance close, pharmacy compliance, merchandising, marketing ROI, fulfillment ops, CX), **latency** tolerance, and **blast radius** if a domain breaks. For e-commerce / pet specialty retail, domains are numerous—architecture should let each domain **own Gold** while sharing **conformed Silver** dimensions.
 - **Layers (Medallion)**:
   - **Bronze**: source-faithful ingest (immutable or lightly typed); retain raw fidelity for replay/audit; partition or cluster by ingest date / source for cost and reprocessing.
-  - **Silver**: cleansed, standardized, conformed keys; shared dimensions (customer, product, geography); business rules and deduplication applied once for reuse across domains.
-  - **Gold**: domain-specific marts and curated outputs; optional **semantic layer** for governed metrics and self-serve BI; stable contracts for downstream consumers.
+  - **Silver**: cleansed, standardized, conformed keys; **cross-domain** shared dimensions (customer, pet, product/SKU, geography, calendar); business rules and deduplication applied once for reuse across domains.
+  - **Gold**: **domain-owned** marts and curated outputs; optional **semantic layer** for governed metrics and self-serve BI; stable contracts for downstream consumers.
+
+**E-commerce / pet retail domains and sub-domains** (reference: `domain.txt` — use this map when whiteboarding “who produces what” and where **contracts** sit between teams):
+
+| Domain | Sub-domains (examples) | Typical Bronze sources → Silver/Gold notes |
+|--------|------------------------|---------------------------------------------|
+| **Customer & Pet** | Customer identity & profile; lifecycle & behavior; preferences & personalization; **pet** identity & profile; pet health & medical; customer financial & value (LTV, margin); acquisition & attribution | OMS/CRM, CDP, loyalty, vet/Rx-adjacent profile stores → conformed **customer / household / pet** in Silver; Gold: lifecycle, LTV, personalization features |
+| **Orders & Transactions** | Order capture; line items; **payments & settlements**; order status & lifecycle | Order DB, payment gateway, OMS events → Silver: **order**, **order_line**, **payment** facts; Gold: conversion, AOV, refund rate, net sales marts |
+| **Autoship / Subscription** | Subscription identity; schedule & cadence; modifications (skip/pause); churn & reasons | Subscription platform, billing → Silver: **subscription** conformed to customer/pet/SKU; Gold: recurring revenue, autoship churn, on-time ship |
+| **Pet Health & Pharmacy** | Vet authorization; prescription lifecycle; pharmacy orders; vet network | Pharmacy/Rx systems, vet approvals → Silver: **prescription**, **vet_authorization**, **pharmacy_order** (strict PII/PHI governance); Gold: approval SLA, pharmacy GMV, compliance reporting |
+| **Fulfillment & Logistics** | Inventory; FC ops (pick/pack); shipping & delivery; **reverse logistics** (returns) | WMS, TMS, carrier feeds → Silver: **inventory**, **shipment**, **fc_event**, **return** aligned to SKU/order; Gold: in-stock, OTD, FC productivity, return rate |
+| **Product & Merchandising** | Catalog & attributes; category taxonomy; pricing; promotions; brand | PIM, MDM, promo engine → Silver: **product / SKU**, **category**, **brand**, **price** / promo SCD patterns; Gold: category performance, promo lift, assortment |
+| **Marketing & Advertising** | Campaign management; channel performance; ad delivery; conversion & attribution | Ad platforms, email/SMS tools, web analytics → Silver: **campaign**, **touchpoint** / **attribution** grain agreed with Finance; Gold: CAC, ROAS, multi-touch attribution marts |
+| **Customer Experience & Support** | Tickets; chat & messaging; phone; surveys (CSAT/NPS) | Zendesk-like, chat telephony, survey tools → Silver: **ticket**, **conversation** linked to customer/order; Gold: resolution time, NPS, contact drivers |
+| **Experimentation & Personalization** | Experiment setup; variant assignment; experiment metrics; personalization model outputs | Exp platform, feature flags, recs/ML feature stores → Silver: **experiment**, **assignment**; Gold: lift, balance checks; **reconcile** model outputs to batch metrics where needed |
+| **Operational & Finance** | Financial calendars; cost centers; vendor & contracts; P&L / margin structures | ERP, FP&A, procurement → Silver: **calendar**, **org**, **vendor**; Gold: fiscal reporting, contribution margin, opex (often **restricted** RBAC) |
+
+**Cross-cutting (Silver) entities to call out in the interview:** `customer`, `household`, `pet`, `product`/`sku`, `location`/`geo`, `calendar`/`fiscal_period`, `order`, `subscription` — so **Gold** domains do not each redefine keys or duplicate PII handling rules.
+
 - **Cross-domain discipline**: **domain ownership** of pipelines and Gold products; **shared standards** for keys, naming, and PII; **contracts** at layer boundaries (schema + SLAs + tests).
 - **Platform services**: orchestration (tasks/Airflow), RBAC, row access policies where needed, lineage and catalog, separate warehouses for ingest vs transform vs BI.
 - **Why it scales**: new domains land in **Bronze**, conform in **Silver**, and publish **Gold** without rewriting other domains’ marts; regressions caught by tests and promotion gates.
